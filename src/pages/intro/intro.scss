@@ -1,0 +1,42 @@
+page-intro {
+  .scroll-content {
+    overflow-y: hidden;
+  }
+
+  .toolbar-background {
+    background: $white;
+    border-color: transparent;
+  }
+
+  .top {
+    height: 60%;
+    background-color: $primary;
+    text-align: center;
+    img {
+      width: 120px;
+      padding-top: 100px;
+    }
+  }
+
+  .bottom {
+    height: 40%;
+  }
+
+  .slide-zoom {
+    height: 100%;
+    padding: 0 10px;
+    h3 {
+      padding-bottom: 20px;
+    }
+    p {
+      font-size: .9em;
+    }
+  }
+
+  .button-slide {
+    color: $primary;
+  }
+  .swiper-pagination-bullet-active {
+    background: $primary;
+  }
+}

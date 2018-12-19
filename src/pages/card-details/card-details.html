@@ -1,0 +1,145 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>
+      My Jobs
+    </ion-title>
+  </ion-navbar>
+
+  <ion-toolbar color="light">
+    <ion-segment color="dark" [(ngModel)]="category">
+      <ion-segment-button value="applied" (ionSelect)="getAppliedJobs()">
+        <!-- <i class="fa fa-file"></i> -->
+        Applied
+      </ion-segment-button>
+      <ion-segment-button value="viewed" (ionSelect)="getViewedJobs()">
+        <!-- <i class="fa fa-eye"></i> -->
+        Viewed
+      </ion-segment-button>
+      <ion-segment-button value="shared" (ionSelect)="getSharedJobs()">
+        <!-- <i class="fa fa-share"></i> -->
+        Shared
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div [ngSwitch]="category">
+    <ion-list *ngSwitchCase="'applied'">
+      <div *ngIf="appliedJobs.length > 0" [@listAnimation]="appliedJobs.length">
+        <ion-list no-lines class="job" *ngFor="let job of appliedJobs">
+          <ion-card>
+            <ion-item (click)="jobDetails(job)">
+              <ion-thumbnail item-start>
+                <img src="assets/imgs/category/{{job.category}}.svg">
+              </ion-thumbnail>
+              <h2>{{ job.name }}</h2>
+              <p>{{ job.description }}</p>
+            </ion-item>
+            <ion-item-divider color="light" class="grey">
+              <span item-start>
+                <i class="fa fa-calendar light" item-start></i>
+                {{ getJobMoment(job.date_applied) }}
+              </span>
+              <span item-end>
+                <i class="fa fa-bookmark light" item-start></i>
+                {{ countJobApplicants(job) }} applied
+              </span>
+            </ion-item-divider>
+          </ion-card>
+        </ion-list>
+      </div>
+      <ion-card padding text-wrap class="not-found" *ngIf="!appliedJobs || appliedJobs.length < 1">
+        <i class="fa fa-4x fa-file"></i>
+        <p>{{isRecruiter() ? 'You have not posted a job yet' : 'You have not applied for any job yet'}}</p>
+      </ion-card>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'appointments'">
+      <div [@listAnimation]="appointments.length">
+        <ion-list *ngFor="let user of appointments">
+          <ion-card>
+            <ion-item (click)="viewUserDetails(user)">
+              <ion-avatar class="border-dark" item-start>
+                  <img [src]="profilePicture(user)" (error)="img.src = getDefaultProfilePic(user)"
+                  #img alt="profile" class="profile-picture">
+              </ion-avatar>
+              <h2>{{user.firstname}} {{user.lastname}}</h2>
+              <p>
+                <i class="fa fa-calendar" item-start></i>
+                {{getDateAppointed(user)}}
+              </p>
+              <i class="fa fa-chevron-right" item-end></i>
+            </ion-item>
+          </ion-card>
+        </ion-list>
+      </div>
+      <ion-card padding text-wrap class="not-found" *ngIf="!appointments || appointments.length < 1">
+        <i class="fa fa-4x fa-calendar"></i>
+        <p>{{ isRecruiter() ? 'You have not made an appointment' : 'You do not have an appointment yet'}}</p>
+      </ion-card>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'viewed'">
+      <div *ngIf="viewedJobs.length > 0" [@listAnimation]="viewedJobs.length">
+        <ion-list no-lines class="job" *ngFor="let job of viewedJobs">
+          <ion-card>
+            <ion-item (click)="jobDetails(job)">
+              <ion-thumbnail item-start>
+                <img src="assets/imgs/category/{{job.category}}.svg">
+              </ion-thumbnail>
+              <h2>{{ job.name }}</h2>
+              <p>{{ job.description }}</p>
+            </ion-item>
+            <ion-item-divider color="light" class="grey">
+              <span item-start>
+                <i class="fa fa-calendar light" item-start></i>
+                {{ getJobMoment(job.date_viewed) }}
+              </span>
+              <span item-end>
+                <i class="fa fa-bookmark light" item-start></i>
+                {{ countJobApplicants(job) }} viewed
+              </span>
+            </ion-item-divider>
+          </ion-card>
+        </ion-list>
+      </div>
+      <ion-card padding text-wrap class="not-found" *ngIf="!viewedJobs || viewedJobs.length < 1">
+        <i class="fa fa-4x fa-eye"></i>
+        <p>{{isRecruiter() ? 'You have not viewed a candidate yet' : 'You have not viewed for any job yet'}}</p>
+      </ion-card>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'shared'">
+      <div *ngIf="sharedJobs.length > 0" [@listAnimation]="sharedJobs.length">
+        <ion-list no-lines class="job" *ngFor="let job of sharedJobs">
+          <ion-card>
+            <ion-item (click)="jobDetails(job)">
+              <ion-thumbnail item-start>
+                <img src="assets/imgs/category/{{job.category}}.svg">
+              </ion-thumbnail>
+              <h2>{{ job.name }}</h2>
+              <p>{{ job.description }}</p>
+            </ion-item>
+            <ion-item-divider color="light" class="grey">
+              <span item-start>
+                <i class="fa fa-calendar light" item-start></i>
+                {{ getJobMoment(job.date_shared) }}
+              </span>
+              <span item-end>
+                <i class="fa fa-bookmark light" item-start></i>
+                {{ countJobApplicants(job) }} shared
+              </span>
+            </ion-item-divider>
+          </ion-card>
+        </ion-list>
+      </div>
+      <ion-card padding text-wrap class="not-found" *ngIf="!sharedJobs || sharedJobs.length < 1">
+        <i class="fa fa-4x fa-share"></i>
+        <p>You have not shared a job yet</p>
+      </ion-card>
+    </ion-list>
+
+  </div>
+
+</ion-content>

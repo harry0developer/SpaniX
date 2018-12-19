@@ -1,0 +1,173 @@
+$primary: #EF6461;
+$secondary: #f4f4f4;
+$white: #fff;
+$danger: #ff6473;
+$green: #37c396;
+$grey: #cecece;
+$light-grey: #f1f1f1f1;
+$dark: #4d4848;
+
+
+.border-dark {
+    border: 2px solid $primary;
+    border-radius: 100%;
+    padding: 2px;
+}
+
+.button {
+    color: $white;
+    padding: 20px;
+    margin: 5px 0;
+    text-transform: uppercase;
+    border-radius: 20px;
+}
+
+.button.light {
+    background-color: $secondary !important;
+    color: $white;
+}
+
+.button.primary {
+    background-color: $primary !important;
+    color: $white;
+}
+
+.button.dark {
+    background-color: $primary !important;
+    color: $white;
+}
+.button.dark.border {
+    border: 1px solid $white !important;
+}
+
+.button.clear {
+    color: $white !important;
+}
+
+.button.danger {
+    color: $white !important;
+    background-color: $danger;
+}
+.button.green {
+    color: $white !important;
+    background-color: $green;
+}
+
+.action-sheet-title {
+    color: $dark !important;
+}
+.action-sheet-md .action-sheet-icon {
+    margin-right: 10px;
+}
+.alert-button, .alert-title, .alert-sub-title  {
+    color: $primary !important;
+}
+
+.toolbar-background {
+    background-color: $primary !important;
+}
+.item-divider.light {
+    background-color: $light-grey;
+    color: $primary;
+}
+
+.segment-button.segment-activated {
+    border-color: $white !important;
+    color: $white !important;
+}
+
+[aria-checked=true] .alert-checkbox-icon {
+    border-color: $primary !important;
+    background-color: $primary !important;
+}
+
+[aria-checked=true] .alert-radio-label {
+    color: $primary !important;
+}
+
+[aria-checked=true] .alert-radio-icon {
+    border-color: $primary !important;
+}
+.alert-radio-inner {
+    background-color: $primary !important;
+}
+.action-sheet-button {
+    color: $primary !important;
+}
+
+.toggle-checked .toggle-icon {
+    background-color: $white !important;
+}
+
+.toggle-icon{
+    background-color: $white !important;
+}
+
+.picker-button, .picker-opt.picker-opt-selected  {
+    color: $primary !important;
+}
+
+.alert-wrapper {
+    min-width: 85% !important;
+    position: absolute;
+}
+
+.alert-input:focus {
+    border-bottom: 1px solid $primary !important;
+}
+
+.spinner-crescent {
+    stroke: $primary !important;
+}
+
+.action-sheet-ios .action-sheet-group {
+    border-radius: 0 !important;
+}
+
+ion-thumbnail {
+    min-width: 60px !important;
+    img{
+        width: 60px !important;
+    }
+}
+
+ion-input {
+    color: $primary;
+}
+
+ion-item.item.item-input, ion-item.item.item-select {
+    border-radius: 4px !important;
+}
+
+ion-card-content {
+    padding: 8px !important;
+}
+
+ion-avatar {
+    img {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    img.light-blue {
+        border: 2px solid $secondary;
+    }
+    img.white {
+        border: 2px solid $white;
+    }
+    img.dark-blue {
+        border: 2px solid $primary;
+    }
+}
+
+.toolbar-ios {
+    min-height: 55px !important;
+}
+ion-card {
+    margin: 6px !important;
+    border-radius: 2px !important;
+    width: calc(100% - 12px) !important;
+}
+
+.spinner-crescent circle {
+    stroke: $primary !important;
+}

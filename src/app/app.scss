@@ -1,0 +1,94 @@
+@import '../theme/spani.scss';
+.user-profile {
+    background-color: $primary !important;
+	color: $white !important;
+	border-top: 0 !important;
+	border-bottom: 0 !important;
+	ion-item {
+		border-top: 0 !important;
+		border-bottom: 0 !important;
+		margin: 0 !important;
+	}
+    ion-icon.light {
+		color: $white !important;
+	}
+    .profile{
+		margin: 16% 0;
+		text-align: center;
+
+		.profile-picture {
+			border: 2px solid $white;
+			padding: 2px;
+			border-radius: 100%;
+			max-width: 100px;
+			max-height: 100px;
+		}
+		h2{
+			font-size: 1.4em;
+			color: $white;
+			margin-bottom: 0;
+		}
+		p{
+			color: $white;
+			margin: 5px 0;
+		}
+    }
+    .menu {
+		ion-item {
+			background-color: $primary !important;
+			color: $white !important;
+		}
+
+		.item-inner{
+			border-bottom: none !important;
+		}
+	}
+}
+
+
+// Global style
+
+.action-sheet-button {
+    color: $primary;
+}
+
+.not-found {
+	background-color: $white !important;
+		padding: 5px;
+		text-align: center;
+		color: $primary;
+		p {
+				font-size: 1.2em;
+				color: $primary !important
+		};
+		i, p {
+				padding: 20px 5px;
+				color: $primary !important
+		}
+}
+
+.spinner-container {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    ion-spinner {
+        color: $white !important;
+    }
+}
+
+input.text-input {
+    font-weight: bold;
+}
+
+.brand {
+    text-align: center;
+    margin: 20% 0;
+    .logo {
+        width: 120px;
+    }
+}
+
+.validation {
+	text-align: center;
+	color: $dark;
+}

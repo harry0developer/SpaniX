@@ -1,0 +1,25 @@
+page-shared-jobs {
+  .summary {
+		padding: 10px 0;
+		height: 100px;
+		ion-label {
+			display: flex;
+		}
+		p {
+			font-size: .9em;
+		}
+    i {
+      font-size: 2em;
+      padding-right: 10px;
+      margin-top: 20%;
+      color: $primary;
+    }
+    h2 {
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+    .card-details {
+        margin-left: 10px;
+    }
+  }
+}

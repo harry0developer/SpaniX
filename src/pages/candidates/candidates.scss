@@ -1,0 +1,63 @@
+page-candidates {
+  .scroll-content {
+    background-color: $light-grey !important;
+  }
+  // ion-scroll {
+  //   white-space: nowrap;
+  //   height: 250px;
+  //   i {
+  //     padding-right: 4px;
+  //   }
+  // }
+
+  ion-item.item {
+    border: 0 !important;
+    border-bottom: 2px solid $secondary !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    .list.list-ios {
+      margin: 0 !important;
+    }
+    ion-badge {
+      margin-top: 10px;
+      background-color: $secondary;
+      color: $primary;
+    }
+    ion-icon {
+      font-size: 1em !important;
+      margin-right: 4px !important;
+    }
+
+    h2 {
+      font-weight: bold !important;
+      margin: 5px 0 !important;
+    }
+
+    p.title {
+      margin: 5px 0 !important;
+    }
+
+    p.distance {
+      color: $primary;
+    }
+  }
+
+  .rating {
+    .star-icon {
+        font-size: .9em !important;
+        color: $primary !important;
+    }
+    .star-icon:before {
+        color: $primary !important;
+    }
+  }
+  .active {
+    border: 2px $white solid;
+    color: $white !important;
+  }
+
+  /* Hide ion-content scrollbar */
+  ::-webkit-scrollbar{
+    display:none;
+  }
+}

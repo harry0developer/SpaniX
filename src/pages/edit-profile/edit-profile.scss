@@ -1,0 +1,37 @@
+page-edit-profile {
+    .scroll-content{
+        background-color: $light-grey;
+    }
+
+    .button.dark {
+        width: 90%;
+        margin: 0 auto !important;
+    }
+
+    ion-list {
+        margin: 10px 0 !important;
+    }
+
+    ion-item {
+        border-radius: 0 !important;
+        margin: 10px 0 !important;
+        color: $dark !important;
+        font-weight: lighter;
+        input.text-input {
+            font-weight: normal;
+        }
+        i {
+            font-size: 1.4em !important;
+            color: $primary;
+        }
+
+    }
+
+    .item-divider{
+        h2 {
+            font-weight: bold !important;
+            color: $dark;
+        }
+    }
+
+}

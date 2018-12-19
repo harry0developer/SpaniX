@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Profile</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="settingsPage()">
+        <ion-icon name="settings"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="top" *ngIf="profile">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-4>
+          <img src="{{profilePicture()}}" alt="profile" [src]="profilePicture()" class="animated zoomIn"
+            (error)="img.src = defaultImg" #img (click)="presentActionSheet()">
+        </ion-col>
+        <ion-col col-8>
+          <ion-row>
+            <ion-col col-6 class="animated slideInDown" *ngIf="!isRecruiter()">
+              <h2>{{viewedJobs?.length || 0}}</h2>
+              <p>Viewed Jobs</p>
+            </ion-col>
+            <ion-col col-6 class="animated slideInDown" *ngIf="isRecruiter()">
+              <h2>{{postedJobs?.length || 0}}</h2>
+              <p>Posted Jobs</p>
+            </ion-col>
+            <ion-col col-6 class="animated slideInDown">
+              <h2>{{appointments?.length || 0}}</h2>
+              <p>{{appointments?.length === 1 ? 'Appointment' : 'Appointments'}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row class="profile" padding>
+        <ion-col col-8>
+          <h2 class="animated slideInLeft">{{profile.firstname}} {{profile.lastname}} </h2>
+          <p class="animated slideInRight">{{profile.title || profile.type}}</p>
+        </ion-col>
+        <ion-col col-4 class="animated slideInRight" >
+          <rating [float]="true" [(ngModel)]="stars" [readonly]="true" ></rating>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div *ngIf="profile" @ListItemsAnimation>
+    <ion-list>
+      <ion-card>
+      <ion-item-divider>
+        <h2>Personal Information</h2>
+      </ion-item-divider>
+        <ion-item text-wrap>
+          <i class="fa fa-calendar" item-start></i>
+          <p>Date of birth <span class="details">{{profile.dob}}</span></p>
+        </ion-item>
+        <ion-item text-wrap>
+          <i class="fa fa-transgender" item-start></i>
+          <p>Gender <span class="details">{{profile.gender}}</span></p>
+        </ion-item>
+        <ion-item text-wrap>
+          <i class="fa fa-flag" item-start></i>
+          <p>Nationality <span class="details">{{profile.nationality}}</span></p>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+
+    <ion-list>
+      <ion-card>
+        <ion-item-divider>
+          <h2>Contact Details</h2>
+        </ion-item-divider>
+        <ion-item text-wrap>
+          <i class="fa fa-phone" item-start></i>
+          <p>Phone number <span class="details">{{profile.phone}}</span></p>
+        </ion-item>
+        <ion-item text-wrap>
+          <i class="fa fa-envelope" item-start></i>
+          <p>Email address <span class="details">{{profile.email}}</span></p>
+        </ion-item>
+        <ion-item text-wrap class="address">
+          <i class="fa fa-map" item-start></i>
+          <p>{{profile.address}}</p>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+
+  </div>
+</ion-content>

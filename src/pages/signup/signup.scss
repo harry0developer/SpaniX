@@ -1,0 +1,31 @@
+page-signup {
+    .content{
+        background-color: $primary !important;
+    }
+    .brand .logo {
+        width: 80px;
+    }
+    .item-inner {
+        border-bottom: none !important;
+    }
+    ion-item {
+        border: 1px solid $secondary !important;
+        margin: 5px 0 !important;
+    }
+
+    ion-footer{
+        text-align: center;
+    }
+
+    p {
+        color: $white;
+    }
+    .label {
+        color: $primary !important;
+    }
+
+    .button.eye {
+        color: $primary;
+        font-size: 1em;
+    }
+}

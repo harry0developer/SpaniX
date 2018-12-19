@@ -1,0 +1,136 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>Post Job</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="presentActionSheet()">
+        Cancel
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-list @ItemsAnimation>
+    <ion-grid class="personal-details">
+      <ion-row class="details_row">
+        <ion-col col-12>
+          <ion-item no-lines>
+            <ion-label floating>Job name</ion-label>
+            <ion-input [(ngModel)]="data.name" required name="name" #name="ngModel" pattern=".{3,}" type="text">
+            </ion-input>
+          </ion-item>
+          <div [hidden]="name.valid || name.pristine" class="validation">
+            <p class="animated tada" [hidden]="!name.hasError('required')">Job name is required</p>
+            <p class="animated tada" [hidden]="!name.hasError('pattern')">Job name is too short</p>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-12>
+          <ion-item no-lines>
+            <ion-label floating>Category</ion-label>
+            <ion-select (ionChange)="selectedCategory(data.category)" [(ngModel)]="data.category" multiple="false" required category="category"
+              #category="ngModel">
+              <ion-option *ngFor="let category of categories; let i = index">{{category.name}}</ion-option>
+            </ion-select>
+          </ion-item>
+          <div [hidden]="category.valid || category.pristine" class="validation">
+            <p class="animated tada" [hidden]="!category.hasError('required')">Category is required</p>
+          </div>
+        </ion-col>
+        <ion-col col-12 [hidden]="!data.category">
+          <ion-item no-lines>
+            <ion-label floating>Skills</ion-label>
+            <ion-select [(ngModel)]="data.skills" multiple="true" required skillz="skillz" #skillz="ngModel">
+              <ion-option *ngFor="let skill of skills">{{skill}}</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-6>
+          <ion-item no-lines>
+            <ion-label floating>Job Type</ion-label>
+            <ion-select [(ngModel)]="data.type" multiple="false" required jobType="jobType" #jobType="ngModel">
+              <ion-option>Full time</ion-option>
+              <ion-option>Part time</ion-option>
+              <ion-option>Once off</ion-option>
+            </ion-select>
+          </ion-item>
+          <div [hidden]="jobType.valid || jobType.pristine" class="validation">
+            <p class="animated tada" [hidden]="!jobType.hasError('required')">Job type is required</p>
+          </div>
+        </ion-col>
+        <ion-col col-6>
+          <ion-item no-lines>
+            <ion-label floating>Experience</ion-label>
+            <ion-select [(ngModel)]="data.experience" multiple="false" required experience="experience" #experience="ngModel">
+              <ion-option>0-1 Year</ion-option>
+              <ion-option>1-2 Years</ion-option>
+              <ion-option>2-5 Years</ion-option>
+              <ion-option>5+ Years</ion-option>
+            </ion-select>
+          </ion-item>
+          <div [hidden]="experience.valid || experience.pristine" class="validation">
+            <p class="animated tada" [hidden]="!experience.hasError('required')">Experience is required</p>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-6 class="salary">
+          <ion-item>
+            <ion-label floating>Salary (R)</ion-label>
+            <ion-input [(ngModel)]="data.salary" required salary="salary" #salary="ngModel" type="number"></ion-input>
+          </ion-item>
+          <div [hidden]="salary.valid || salary.pristine" class="validation">
+            <p class="animated tada" [hidden]="!salary.hasError('required')">Salary is required</p>
+          </div>
+        </ion-col>
+        <ion-col class="frequency" col-6>
+          <ion-item no-lines>
+            <ion-label floating>Frequency</ion-label>
+            <ion-select [(ngModel)]="data.salary_frequency" multiple="false" required frequency="frequency" #frequency="ngModel">
+              <ion-option>Per day</ion-option>
+              <ion-option>Per week</ion-option>
+              <ion-option>Per month</ion-option>
+              <ion-option>Once off</ion-option>
+            </ion-select>
+          </ion-item>
+          <div [hidden]="frequency.valid || frequency.pristine" class="validation">
+            <p class="animated tada" [hidden]="!frequency.hasError('required')">Frequency is required</p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="address" col-12>
+          <ion-item no-lines tappable>
+            <ion-label floating>Pick Job Address</ion-label>
+            <ion-input (ionFocus)="showAddressModal()" [(ngModel)]="data.address" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-12>
+          <ion-item no-lines>
+            <ion-label floating>Job Description</ion-label>
+            <ion-textarea [(ngModel)]="data.description" autocorrect="on" autocomplete="on" rows="3" required pattern=".{5,}" description="description"
+              #description="ngModel"></ion-textarea>
+          </ion-item>
+          <div [hidden]="description.valid || description.pristine" class="validation">
+            <p class="animated tada" [hidden]="!description.hasError('required')">Description is required</p>
+            <p class="animated tada" [hidden]="!description.hasError('pattern')">Description is too short</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <button ion-button color="light" class="dark border" block [disabled]="!name.valid || !category.valid || !jobType.valid  || skillz.pristine || !experience.valid || !salary.valid || !frequency.valid || !description.valid"
+      (click)="postJob()">Post Job</button>
+
+  </ion-list>
+
+</ion-content>

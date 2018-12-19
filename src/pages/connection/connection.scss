@@ -1,0 +1,20 @@
+page-connection {
+    .content {
+        background-color: $primary !important;
+        color: $white !important;
+    }
+    .lost-connection{
+        margin: 30% 0;
+        text-align: center;
+        ion-icon{
+            color: $white;
+            font-size: 6em;
+            margin: 10% 0;
+        }
+        p{
+            color: $white;
+            font-size: 1.2em;
+            margin-bottom: 10%;
+        }
+    }
+}

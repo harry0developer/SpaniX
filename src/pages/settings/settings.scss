@@ -1,0 +1,49 @@
+page-settings {
+    .content .scroll-content{
+        background-color: $secondary;
+    }
+    .danger, .green {
+        width: 100px !important;
+        padding: 15px !important;
+    }
+    .outline {
+        color: $primary !important;
+        border-color: none !important;
+        background-color: transparent !important;
+    }
+    .toggle-icon {
+        background-color: $grey !important;
+    }
+    .toggle-checked .toggle-icon {
+        background-color: $primary !important;
+    }
+
+    .button.small {
+        width: 120px !important;
+        padding: 16px !important;
+    }
+
+    ion-list {
+        margin: 10px 0 !important;
+    }
+
+    ion-item.item {
+        border-radius: 0 !important;
+        margin: 0 !important;
+        color: $dark !important;
+        i {
+            color: $primary;
+        }
+    }
+
+    ion-item-divider.light {
+        color: $primary !important;
+        background-color: $white !important;
+        padding: 5px 20px !important;
+        border-bottom: 1px solid $secondary !important;
+        h2{
+            font-weight: bolder !important;
+            color: $dark;
+        }
+    }
+}

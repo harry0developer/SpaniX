@@ -1,0 +1,32 @@
+page-otp {
+    .content{
+        background-color: $primary !important;
+    }
+    .item-inner {
+        border-bottom: none !important;
+    }
+    ion-item {
+        border: 1px solid $secondary !important;
+        margin: 10px 0 !important;
+    }
+    ion-footer {
+        text-align: center;
+        background-color: $primary;
+    }
+
+    p {
+        color: $white;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .label {
+        color: $primary !important;
+    }
+
+    .resend {
+        margin: 10px;
+    }
+
+
+}

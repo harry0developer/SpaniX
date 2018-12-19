@@ -1,0 +1,35 @@
+<ion-header></ion-header>
+
+<ion-content padding>
+  <div class="brand">
+    <img src="../../assets/imgs/logo_light.svg" alt="Spani logo" class="logo">
+  </div>
+
+  <ion-list>
+    <h2>Feeback</h2>
+    <p>Please tell us why you are leaving us</p>
+    <ion-item text-wrap>
+      <ion-label>{{ isRecruiter() ? 'I found the perfect candidate for the job' : 'I found the perfect job'}}</ion-label>
+      <ion-checkbox [(ngModel)]="feedback.found" color='dark'></ion-checkbox>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <ion-label>I am no longer looking</ion-label>
+      <ion-checkbox [(ngModel)]="feedback.notLooking" color='dark'></ion-checkbox>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <ion-label>I do not find this app useful</ion-label>
+      <ion-checkbox [(ngModel)]="feedback.notUseful" color='dark'></ion-checkbox>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <ion-label>Other</ion-label>
+      <ion-checkbox [(ngModel)]="feedback.other" color='dark'></ion-checkbox>
+    </ion-item>
+
+  </ion-list>
+
+  <button ion-button block class="dark" (click)="goodbye()">Goodbye</button>
+
+</ion-content>

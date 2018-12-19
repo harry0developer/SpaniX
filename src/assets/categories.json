@@ -1,0 +1,158 @@
+[
+	{
+		"name": "Fitness Training",
+		"icon": "fa fa-capsules",
+		"skills": [
+			"Lose weight",
+			"Build Muscle",
+			"Jogging",
+			"Yoga"
+		]
+	},
+	{
+		"name": "Construction",
+		"icon": "fa fa-building",
+		"skills": [
+			"Building",
+			"Measuring",
+			"Cuting",
+			"Mixing"
+		]
+	},
+	{
+		"name": "Carpentry",
+		"icon": "fa fa-calendar",
+		"skills": [
+			"Cuting",
+			"Measuring",
+			"Designing",
+			"Painting"
+		]
+	},
+	{
+		"name": "Cleaning",
+		"icon": "fa fa-broom",
+		"skills": [
+			"Cleaning",
+			"Cooking",
+			"Washing",
+			"Ironing"
+		]
+	},
+	{
+		"name": "Transportation",
+		"icon": "fa fa-truck",
+		"skills": [
+			"Bike",
+			"Code 10",
+			"Code 14",
+			"PDP"
+		]
+	},
+	{
+		"name": "Electricity",
+		"icon": "fa fa-bolt",
+		"skills": [
+			"Cabling",
+			"Measuring",
+			"Cutting",
+			"Testing"
+		]
+	},
+	{
+		"name": "Gardening",
+		"icon": "fa fa-seedling",
+		"skills": [
+			"Cleaning",
+			"Grass cutting",
+			"Tree pruning",
+			"Planting",
+			"Florest",
+			"Pool cleaning"
+		]
+	},
+	{
+		"name": "Mechanic",
+		"icon": "fa fa-wrench",
+		"skills": [
+			"Maintenance",
+			"Fitting",
+			"Cars",
+			"Trucks",
+			"Change wheel",
+			"Re-spraying"
+		]
+	},
+	{
+		"name": "Nanny",
+		"icon": "fa fa-child",
+		"skills": [
+			"Cleaning",
+			"Baby care",
+			"Cooking",
+			"Washing"
+		]
+	},
+	{
+		"name": "Painting",
+		"icon": "fa fa-brush",
+		"skills": [
+			"Painting",
+			"Spraying",
+			"Mixing",
+			"Drawing"
+		]
+	},
+	{
+		"name": "Plumbing",
+		"icon": "fa fa-shower",
+		"skills": [
+			"Pipes",
+			"Installations",
+			"Maintenance",
+			"Blockage"
+		]
+	},
+	{
+		"name": "Call Center",
+		"icon": "fa fa-headset",
+		"skills": [
+			"Pipes",
+			"Installations",
+			"Maintenance",
+			"Blockage"
+		]
+	},
+	{
+		"name": "Security",
+		"icon": "fa fa-user-shield",
+		"skills": [
+			"Firearm",
+			"guarding",
+			"body-guard"
+		]
+	},
+	{
+		"name": "Tiling",
+		"icon": "fa fa-th",
+		"skills": [
+			"Tiling",
+			"Measuring",
+			"Cutting"
+		]
+	},
+	{
+		"name": "Welding",
+		"icon": "fa fa-calendar",
+		"skills": [
+			"Welding",
+			"Cutting"
+		]
+	},
+	{
+		"name": "Other",
+		"icon": "fa fa-calendar",
+		"skills": ["Personal service", "MC"]
+	}
+
+]

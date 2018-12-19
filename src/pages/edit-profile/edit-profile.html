@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>Edit Profile</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="dismiss()">
+        Cancel
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="user" @ListItemsAnimation>
+    <ion-list>
+      <ion-card>
+        <ion-item-divider>
+          <h2>Update phone number</h2>
+        </ion-item-divider>
+        <ion-item>
+          <i class="fa fa-phone" item-start></i>
+          <ion-input [(ngModel)]="data.phone" placeholder="Phone number" required phoneNumber="phoneNumber" #phoneNumber="ngModel"
+            pattern=".{10,}" (ionChange)="phoneNumberChanged()" type="text"></ion-input>
+        </ion-item>
+        <div [hidden]="phoneNumber.valid || phoneNumber.pristine" class="validation">
+          <p class="animated tada" [hidden]="!phoneNumber.hasError('required')">Phone number is required</p>
+          <p class="animated tada" [hidden]="!phoneNumber.hasError('pattern')">Phone number is too short</p>
+        </div>
+      </ion-card>
+    </ion-list>
+    <ion-list>
+      <ion-card>
+        <ion-item-divider>
+          <h2>Update home address</h2>
+        </ion-item-divider>
+        <ion-item>
+          <i class="fa fa-map-marker" item-start></i>
+          <ion-input (ionFocus)="showAddressModal()" [(ngModel)]="data.address" placeholder="Home address" type="text"></ion-input>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+    <button ion-button color="light" class="dark" block (click)="updateDetails()">Update Details</button>
+
+  </div>
+</ion-content>

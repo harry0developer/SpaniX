@@ -1,0 +1,81 @@
+<ion-header >
+  <ion-navbar color="dark">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Candiates</ion-title>
+    <!-- <ion-buttons end>
+      <button ion-button icon-only (click)="postJob()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons> -->
+  </ion-navbar>
+  <ion-toolbar color="dark">
+    <ion-searchbar [(ngModel)]="searchTerm" placeholder="Search users by name" [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
+    <div *ngIf="searching" class="spinner-container">
+      <ion-spinner></ion-spinner>
+    </div>
+  </ion-toolbar>
+
+</ion-header>
+
+  <ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content
+        pullingIcon="arrow-dropdown"
+        pullingText="Refresh users"
+        refreshingSpinner="circles"
+        refreshingText="Refreshing...">
+      </ion-refresher-content>
+    </ion-refresher>
+<!--
+    <ion-row class="content-scroll">
+      <ion-item no-lines>
+        <ion-scroll scrollX="true">
+          <span class="scroll-item scroll"
+            [ngClass]="{'active': activeCategory.toLowerCase() === category.name.toLowerCase()}"
+            *ngFor="let category of categories"
+            (click)="filterCandidates(category)">
+              <i class="{{category.icon}}"></i>
+              {{category.name}}
+          </span>
+        </ion-scroll>
+      </ion-item>
+    </ion-row> -->
+    <div [@listAnimation]="candidates?.length">
+      <ion-list class="main">
+        <ion-card class="user" *ngFor="let user of candidates">
+          <ion-item (click)="viewUserDetails(user)">
+            <ion-avatar class="border-dark" item-start>
+              <img [src]="profilePicture(user)" (error)="img.src = getDefaultProfilePic(user)" #img alt="profile" class="profile-picture">
+            </ion-avatar>
+            <h2>{{user.firstname}} {{user.lastname}}</h2>
+            <p class="title">{{user.title}}</p>
+            <p>
+              <rating [float]="true" [(ngModel)]="user.rating" [readonly]="true" ></rating>
+            </p>
+            <p item-end class="distance">
+              <ion-icon name="pin"  item-start></ion-icon>
+              {{user.distance}} KM
+            </p>
+
+            <div class="row">
+              <!-- <div class="col col-4">{{user.title}}</div>
+              <div class="col col-4">
+                <rating [float]="true" [(ngModel)]="user.rating" [readonly]="true" ></rating>
+              </div>
+              <div class="col col-4">
+                <ion-icon name="pin"  item-start></ion-icon>
+                {{user.distance}} KM
+              </div> -->
+            </div>
+            <i class="fa fa-chevron-right" item-end></i>
+          </ion-item>
+        </ion-card>
+        <ion-card padding text-wrap class="not-found" *ngIf="!candidates || (candidates && candidates.length < 1)">
+          <i class="fa fa-4x fa-search"></i>
+          <p>No candidates found matching this search criteria</p>
+        </ion-card>
+      </ion-list>
+    </div>
+  </ion-content>

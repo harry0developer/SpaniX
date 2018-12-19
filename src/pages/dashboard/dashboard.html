@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Dashboard</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content *ngIf="profile">
+  <div class="top">
+    <div class="profile">
+      <img src="{{profilePicture()}}" alt="profile" [src]="profilePicture()" class="animated zoomIn" (error)="img.src = defaultImg"
+        #img>
+    </div>
+    <div class="animated slideInRight">
+      <rating [float]="true" [(ngModel)]="stars" [readonly]="true"></rating>
+    </div>
+    <h2 class="animated slideInLeft">{{profile.firstname}} {{profile.lastname}} </h2>
+    <p class="animated slideInRight">{{profile.title || profile.type}}</p>
+    <button ion-button round small class="primary animated zoomIn" (click)="editProfile()" color="primary">Edit Profile</button>
+  </div>
+  <ion-grid class="contact-info">
+    <ion-row>
+      <ion-col col-6 class="animated slideInLeft">
+        <i class="fa fa-phone" item-start></i>
+        {{ profile.phone}}
+      </ion-col>
+      <ion-col col-6 class="animated slideInRight">
+        <i class="fa fa-envelope" item-start></i>
+        {{ profile.email}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row *ngIf="isRecruiter()">
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-folder"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{postedJobs?.length || 0}}</h2>
+              <p>Posted Jobs</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-users"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{viewedCandidates?.length || 0}}</h2>
+              <p>Viewed Candidates</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="!isRecruiter()">
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary" (tap)="viewAppliedJobs()">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-file"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{appliedJobs?.length || 0}}</h2>
+              <p>Jobs Applied</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary" (tap)="viewViewedJobs()">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-eye"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{viewedJobs?.length || 0}}</h2>
+              <p>Jobs Viewed</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary" (tap)="viewRated()">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-star"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{rated?.length || 0}}</h2>
+              <p>Rated</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary" (tap)="viewSharedJobs()">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-share"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{sharedJobs?.length || 0}}</h2>
+              <p>Jobs Shared</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,91 @@
+page-profile {
+    .toolbar-background {
+        border-style: none !important;
+        background-color: $white !important;
+        color: $primary !important;
+    }
+
+    .bar-button-default-ios, .bar-button-default-md, .toolbar-title {
+        color: $primary !important;
+    }
+
+    .scroll-content {
+        background-color: $white;
+    }
+
+    .header-md::after, .header-ios::after {
+        height: 0;
+    }
+
+    .top{
+        text-align: center;
+        background-color: $white;
+        color: $dark;
+        p{
+            margin: 0 !important;
+            font-size: .8em;
+            padding-bottom: 10px !important;
+        }
+        h2{
+            margin: 0;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+        img{
+            border: 2px solid $primary;
+            padding: 2px;
+            width: 60px;
+            height: 60px;
+            // margin: 40px 0 10px 0;
+            border-radius: 100%;
+        }
+        .summary{
+            color: $secondary;
+            padding: 0.5em 0.6em;
+            padding-bottom: 20px;
+        }
+        .button{
+            border: 1px solid $secondary;
+        }
+
+        .profile {
+            text-align: left !important;
+            margin-left: 10px !important;
+        }
+
+        .rating {
+            .star-icon {
+                font-size: .9em !important;
+                color: $primary !important;
+            }
+            .star-icon:before {
+                color: $primary !important;
+            }
+        }
+    }
+
+    .list {
+        ion-item-divider {
+            background-color: $light-grey;
+        }
+        ion-item {
+            min-height: 60px !important;
+            border-bottom: 1px solid $light-grey;
+
+            i {
+                color: $primary;
+                display: inline-block;
+            }
+            p {
+                color: $dark;
+                font-weight: bold;
+            }
+            .details {
+                float: right;
+                color: $dark;
+                font-weight: normal !important;
+            }
+
+        }
+    }
+}

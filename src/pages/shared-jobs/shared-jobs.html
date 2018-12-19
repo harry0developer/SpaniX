@@ -1,0 +1,67 @@
+<ion-header>
+
+  <ion-navbar color="dark">
+    <ion-title>Shared Jobs</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-facebook"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{facebook?.length || 0}}</h2>
+              <p>Facebook</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-twitter"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{twitter?.length || 0}}</h2>
+              <p>Twitter</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-whatsapp"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{whatsapp?.length || 0}}</h2>
+              <p>Instagram</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+      <ion-col col-6 class="animated zoomIn">
+        <ion-card class="summary">
+          <ion-item>
+            <div class="card-icon">
+              <i class="fa fa-linkedin"></i>
+            </div>
+            <div class="card-details" text-wrap>
+              <h2>{{linkedin?.length || 0}}</h2>
+              <p>LinkedIn</p>
+            </div>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

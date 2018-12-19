@@ -1,0 +1,111 @@
+page-dashboard {
+	.toolbar-background {
+		border-style: none !important;
+		background-color: $white !important;
+		color: $primary !important;
+	}
+
+	.bar-button-default-ios, .bar-button-default-md, .toolbar-title {
+		color: $primary !important;
+	}
+
+	ion-header.header::after {
+		background-image: none;
+	}
+	.top{
+		text-align: center;
+		background-color: $white;
+		color: $dark;
+		padding: 10px 0;
+		border-bottom: 1px solid $light-grey;
+		p{
+				margin: 5px 0 !important;
+				font-size: .8em;
+				padding-bottom: 10px !important;
+		}
+		h2{
+				margin: 5px 0;
+				font-size: 1.4em;
+				font-weight: bold;
+		}
+		img{
+				border: 2px solid $primary;
+				margin: 10px 0;
+				padding: 2px;
+				width: 80px;
+				height: 80px;
+				border-radius: 100%;
+		}
+		.rating {
+			.star-icon {
+					font-size: .8em !important;
+					color: $primary !important;
+			}
+			.star-icon:before {
+					color: $primary !important;
+			}
+		}
+	}
+	.contact-info {
+		font-size: 1.1em;
+		border-bottom: 1px solid $light-grey;
+		line-height: 2;
+		margin-bottom: 20px;
+		[col-6]:first-child {
+			text-align: left;
+		}
+		[col-6]:last-child {
+			text-align: right;
+			border-left: 1px solid $light-grey;
+		}
+		i {
+			color: $primary;
+			padding-right: 10px;
+		}
+		.grid {
+			padding: 0;
+		}
+		.row {
+			padding: 10px;
+		}
+	}
+
+    .col {
+        padding: 0;
+    }
+
+    .summary {
+		padding: 10px 0;
+		height: 100px;
+		ion-label {
+			display: flex;
+		}
+		p {
+			font-size: .8em;
+		}
+        i {
+            font-size: 1.4em;
+            padding-right: 10px;
+			margin-top: 20%;
+			color: $primary;
+        }
+        h2 {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .card-details {
+            margin-left: 10px;
+        }
+	}
+	@media only screen and (max-device-width: 320px) {
+		.summary .card-details {
+			font-size: .8em;
+			margin-top: 10px;
+		}
+
+		.card-icon {
+			margin-top: 10px;
+
+		}
+	}
+}

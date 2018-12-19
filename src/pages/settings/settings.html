@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>Settings</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="dismiss()">
+        Done
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+
+  <div @ListItemsAnimation>
+    <ion-list>
+      <ion-card>
+        <ion-item-divider color="light" class="light">
+          <h2>Personal Information</h2>
+        </ion-item-divider>
+        <ion-item>
+          <ion-label>
+            <i class="fa fa-calendar" item-start></i>
+            Hide Date Of Birth
+          </ion-label>
+          <ion-toggle color="light" class="light" [checked]="settings.hide_dob" [(ngModel)]="settings.hide_dob"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <i class="fa fa-flag" item-start></i>
+            Hide Nationality
+          </ion-label>
+          <ion-toggle color="light" class="light" [checked]="settings.hide_nationality" [(ngModel)]="settings.hide_nationality"></ion-toggle>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+
+    <ion-list>
+      <ion-card>
+        <ion-item-divider color="light" class="light">
+          <h2>Contact Information</h2>
+        </ion-item-divider>
+        <ion-item>
+          <ion-label>
+            <i class="fa fa-envelope" item-start></i>
+            Hide Email Address
+          </ion-label>
+          <ion-toggle color="light" class="light" [checked]="settings.hide_email" [(ngModel)]="settings.hide_email"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <i class="fa fa-phone" item-start></i>
+            Hide Phone number
+          </ion-label>
+          <ion-toggle color="light" class="light" [checked]="settings.hide_phone" [(ngModel)]="settings.hide_phone"></ion-toggle>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+
+    <ion-list>
+      <ion-card>
+        <ion-item-divider color="light" class="light">
+          <h2>Profile Settings</h2>
+        </ion-item-divider>
+        <ion-item>
+          <i class="fa fa-user" item-start></i>
+          Edit Profile
+          <button ion-button round color="light" class="dark small" item-end (click)="editProfile()">Edit</button>
+        </ion-item>
+        <ion-item>
+          <i class="fa fa-lock" item-start></i>
+          Change Password
+          <button ion-button round color="light" class="dark small" item-end (click)="changePasswordPage()">Change</button>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+
+    <ion-list>
+      <ion-card>
+        <ion-item-divider color="light" class="light">
+          <h2>Permissions Settings</h2>
+        </ion-item-divider>
+        <ion-item>
+          <i class="fa fa-map" item-start></i>
+          Allow Location
+          <button ion-button round color="light" class="dark small" item-end (click)="openNetworkSettings()">Allow</button>
+        </ion-item>
+        <!-- <ion-item>
+          <i class="fa fa-lock" item-start></i>
+          Allow Password
+          <button ion-button round color="light" class="dark small" item-end (click)="changePasswordPage()">Change</button>
+        </ion-item> -->
+      </ion-card>
+    </ion-list>
+  </div>
+
+  <!-- <button ion-button block clear color="dark" class="outline">Terms and Conditions</button> -->
+
+</ion-content>

@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>Location</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="dismiss()">
+        Cancel
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar color="primary">
+    <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Find location"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list [hidden]="autocompleteItems.length === 0">
+    <ion-item text-wrap *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+      <ion-icon name="pin" item-start></ion-icon>
+      {{ item.description }}
+    </ion-item>
+  </ion-list>
+  <ion-list class="no-match" [hidden]="autocompleteItems.length !== 0">
+    <ion-item text-wrap >
+      <i class="fa fa-map"></i>
+      <h2>Please type the address and pick from the list</h2>
+    </ion-item>
+  </ion-list>
+</ion-content>

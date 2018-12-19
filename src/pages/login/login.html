@@ -1,0 +1,50 @@
+<ion-header></ion-header>
+
+<ion-content padding>
+  <div class="brand">
+    <img src="../../assets/imgs/logo_light.svg" alt="Spani logo" class="logo">
+  </div>
+
+  <ion-list>
+    <ion-item class="animated pulse">
+      <ion-label>Email Address</ion-label>
+      <ion-input [(ngModel)]="data.email" required email="email" #email="ngModel" pattern="^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$"
+        type="email">
+      </ion-input>
+    </ion-item>
+    <div [hidden]="email.valid || email.pristine" class="validation">
+      <p class="animated tada" [hidden]="!email.hasError('required')">Email address is required</p>
+      <p class="animated tada" [hidden]="!email.hasError('pattern')">Invalid email address</p>
+    </div>
+
+    <ion-item class="animated pulse">
+      <ion-label>Password</ion-label>
+      <ion-input [(ngModel)]="data.password" clearOnEdit=false required password="password" #password="ngModel" pattern=".{4,}"
+        type="{{type}}"></ion-input>
+      <button *ngIf="!showPass" ion-button clear color="dark" class="eye" item-right (click)="showPassword()">
+        <ion-icon name="eye-off"></ion-icon>
+      </button>
+      <button *ngIf="showPass" ion-button clear color="dark" class="eye" item-right (click)="showPassword()">
+        <ion-icon name="eye"></ion-icon>
+      </button>
+    </ion-item>
+    <div [hidden]="password.valid || password.pristine" class="validation">
+      <p class="animated tada" [hidden]="!password.hasError('required')">Password is required</p>
+      <p class="animated tada" [hidden]="!password.hasError('pattern')">Password must be 4 characters or longer</p>
+    </div>
+
+  </ion-list>
+
+  <button ion-button block color="light" [disabled]="!password.valid || !email.valid" class="dark border animated zoonIn" (click)="login()">Login</button>
+</ion-content>
+
+<ion-footer>
+  <div class="row controls">
+    <div class="col col-6 left">
+      <button ion-button clear small class="clear" (click)="goToSignup()">Sign up</button>
+    </div>
+    <div class="col col-6 right">
+      <button ion-button clear small class="clear" (click)="goToForgotPassword()">Forgot password</button>
+    </div>
+  </div>
+</ion-footer>

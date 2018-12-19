@@ -1,0 +1,75 @@
+page-jobs {
+	.content {
+		background-color: $light-grey;
+	}
+
+	ion-list {
+		margin: 5px 0 !important;
+	}
+
+	ion-item {
+		margin: 0 !important;
+		min-height: 90px !important;
+		h2 {
+			color: $dark !important;
+			margin: 10px 0 !important;
+			font-weight: bold !important;
+		}
+		p {
+			font-size: .8em !important;
+			color: $dark;
+		}
+	}
+
+	.job ion-label {
+		margin: 0 20px !important;
+	}
+
+	.distance {
+		text-align: right;
+	}
+
+	.item-inner {
+		margin: 0 !important;
+	}
+
+	.item-divider {
+		background-color: $white !important;
+		color: $primary !important;
+		border-top: 1px solid $secondary !important;
+		padding: 5px 10px !important;
+		font-size: 1.1em;
+	}
+
+	.col {
+		padding: 5px 0 !important;
+	}
+
+	img {
+		padding: 6px;
+	}
+
+	[item-start], [item-end] {
+		font-size: .9em;
+		margin: 0 !important;
+	}
+	i {
+		padding-right: 4px;
+	}
+
+	.animated.delay {
+		animation-delay: 2s;
+	}
+
+	.stuff {
+		background-color: red !important;
+	}
+
+	.searchbar-md .searchbar-clear-icon {
+		top: -5px !important;
+	}
+
+	.searchbar-ios .searchbar-clear-icon {
+		top: -10px !important;
+	}
+}

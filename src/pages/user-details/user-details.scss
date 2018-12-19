@@ -1,0 +1,117 @@
+
+page-user-details {
+    .content {
+        background: $light-grey;
+    }
+    .top {
+        background-color: $white;
+    }
+
+    .toolbar-title  {
+        color: $white !important;
+    }
+
+    .back-button {
+        color: $white !important;
+    }
+
+    .top{
+        text-align: center;
+        background-color: $primary !important;
+        padding-bottom: 10px;
+        color: $white;
+        p{
+            padding: 0 !important;
+            margin: 5px 0 !important;
+        }
+        h2{
+            margin: 10px 0 2px 0;
+            font-size: 1.4em;
+        }
+        img{
+            border: 4px solid $secondary;
+            padding: 2px;
+            width: 100px;
+            height: 100px;
+            margin: 20px 0 10px 0;
+            border-radius: 100%;
+        }
+        .distance, .status {
+            position: absolute;
+            background-color: $secondary;
+            color: $primary;
+            width: 100px;
+            top: 20px;
+            padding: 10px;
+            i {
+                padding-right: 6px;
+            }
+
+        }
+        .distance {
+            right: 0;
+            padding: 12px 10px;
+            padding-right: 10px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        .status {
+            left: 0;
+            padding: 12px 10px;
+            padding-left: 10px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        .rating {
+            .star-icon {
+                font-size: 1em !important;
+                color: $light-grey !important;
+            }
+            .star-icon:before {
+                color: $light-grey !important;
+            }
+        }
+
+        .row.summary {
+            margin-top: 10px;
+        }
+
+    }
+
+    .item.item-block {
+        background-color: $white;
+        padding-left: 0;
+    }
+
+    .info {
+        // background-color: $light-grey;
+        color: $primary;
+        .row  {
+            text-align: center;
+            .col {
+                background: $white;
+                max-width: 49%;
+                margin: .5%;
+                border-radius: 10px;
+            }
+            i {
+                font-size: 1em;
+                color: $primary;
+            }
+
+            i.enlarge {
+                font-size: 1.2em;
+            }
+            p {
+                font-weight: 500;
+            }
+
+        }
+    }
+
+    .button{
+        background-color: $white !important;
+        color: $primary;
+    }
+
+}

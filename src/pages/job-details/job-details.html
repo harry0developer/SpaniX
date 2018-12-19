@@ -1,0 +1,81 @@
+<ion-header>
+    <ion-navbar color="dark">
+      <ion-title>
+        Job Details
+      </ion-title>
+      <ion-buttons *ngIf="job" [hidden]="!isCandidate()" end>
+        <button ion-button icon-left (click)="presentShareJobActionSheet(job)"><ion-icon name="share-alt"></ion-icon>Share</button>
+      </ion-buttons>
+      <ion-buttons *ngIf="job" [hidden]="isCandidate()" end>
+        <button ion-button icon-left (click)="manageJob(job)">
+          <!-- <ion-icon name="create"></ion-icon> -->
+          <i class="fa fa-2x fa-ellipsis-h"></i>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+
+  <ion-content>
+
+    <div class="banner" *ngIf="job">
+      <div class="top_img">
+        <img src="../../assets/imgs/category/{{job.category}}_light.svg" class="animated zoomIn">
+      </div>
+      <h2 class="animated slideInLeft">{{job.name}}</h2>
+      <p class="animated slideInRight">Posted {{getDateTime(job.date_posted)}}</p>
+      <ion-grid class="info">
+        <ion-row>
+          <ion-col col-4 class="animated slideInDown">
+            <h2>{{countShared}}</h2>
+            <p>Shared</p>
+          </ion-col>
+          <ion-col col-4 class="animated slideInDown">
+            <h2>{{countViews}}</h2>
+            <p>Viewed</p>
+          </ion-col>
+          <ion-col col-4 class="animated slideInDown">
+            <h2>{{countApplied}}</h2>
+            <p>Applied</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <ion-list *ngIf="job" >
+      <ion-card-content class="job-summary">
+        <ion-item text-wrap>
+          <i class="animated slideInLeft fa fa-briefcase description" item-start></i>
+          <h2 class="animated slideInDown">Description</h2>
+          <p class="animated slideInUp"> {{ job.description }}</p>
+        </ion-item>
+
+        <ion-item text-wrap>
+          <i class="animated slideInLeft fa fa-map-marker map" item-start></i>
+          <h2 class="animated slideInDown">Address</h2>
+          <p class="animated slideInUp">{{ job.address }}</p>
+        </ion-item>
+
+        <ion-item text-wrap>
+          <i class="animated slideInLeft fa fa-certificate" item-start></i>
+          <h2 class="animated slideInDown">Skills</h2>
+          <ion-badge color="dark" class="animated slideInUp" *ngFor="let skill of getSkills(job.skills)">{{skill}}</ion-badge>
+        </ion-item>
+
+      </ion-card-content>
+
+    <div *ngIf="isCandidate()">
+      <div padding [hidden]="applied">
+        <button ion-button  color="dark" class="dark" block (click)="applyNow(job)">Apply</button>
+      </div>
+      <div padding [hidden]="!applied">
+        <button ion-button  color="dark" class="dark" block (click)="confirmWithdrawApplication(job)">Cancel Application</button>
+      </div>
+    </div>
+
+    <div padding [hidden]="isCandidate()">
+      <!-- <button ion-button  color="light" class="light" block (click)="editJob(job)">Edit Job</button> -->
+    </div>
+
+    </ion-list>
+
+  </ion-content>

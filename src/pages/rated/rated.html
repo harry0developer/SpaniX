@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>My Ratings</ion-title>
+  </ion-navbar>
+  <ion-toolbar color="light">
+    <ion-segment color="dark" [(ngModel)]="ratings">
+      <ion-segment-button value="ratedMe" (ionSelect)="getUsersRatedMe()">
+        Rated me
+      </ion-segment-button>
+      <ion-segment-button value="iRated" (ionSelect)="getUsersIRated()">
+        I rated
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div [ngSwitch]="ratings">
+    <ion-list *ngSwitchCase="'ratedMe'">
+      <div *ngIf="usersRatedMe.length > 0" [@listAnimation]="usersRatedMe.length">
+        <ion-list no-lines class="job" *ngFor="let user of usersRatedMe">
+          <ion-card>
+            <ion-item (click)="getUserDetails(user)">
+              <ion-avatar class="border-dark" item-start>
+                <img [src]="profilePicture(user)" (error)="img.src = getDefaultProfilePic(user)"
+                #img alt="profile" class="profile-picture">
+              </ion-avatar>
+              <h2>{{user.firstname}} {{user.lastname}}</h2>
+              <p>
+                <i class="fa fa-calendar" item-start></i>
+                {{getDateRated(user)}}
+              </p>
+              <i class="fa fa-chevron-right" item-end></i>
+            </ion-item>
+          </ion-card>
+        </ion-list>
+      </div>
+      <ion-card padding text-wrap class="not-found" *ngIf="!usersRatedMe || usersRatedMe.length < 1">
+        <i class="fa fa-4x fa-star"></i>
+        <p>You have been rated yet</p>
+      </ion-card>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'iRated'">
+      <div *ngIf="usersIRated.length > 0" [@listAnimation]="usersIRated.length">
+        <ion-list no-lines class="job" *ngFor="let user of usersIRated">
+          <ion-card >
+            <ion-item (click)="getUserDetails(user)">
+              <ion-avatar class="border-dark" item-start>
+                <img [src]="profilePicture(user)" (error)="img.src = getDefaultProfilePic(user)"
+                #img alt="profile" class="profile-picture">
+              </ion-avatar>
+              <h2>{{user.firstname}} {{user.lastname}}</h2>
+              <p>
+                <i class="fa fa-calendar" item-start></i>
+                {{getDateRated(user)}}
+              </p>
+              <i class="fa fa-chevron-right" item-end></i>
+            </ion-item>
+          </ion-card>
+        </ion-list>
+      </div>
+      <ion-card padding text-wrap class="not-found" *ngIf="!usersIRated || usersIRated.length < 1">
+        <i class="fa fa-4x fa-star"></i>
+        <p>You have not rated anyone yet</p>
+      </ion-card>
+    </ion-list>
+  </div>
+</ion-content>
+<!--           
+  <div [@listAnimation]="ratedUsers.length">
+    <ion-list *ngFor="let user of ratedUsers">
+      <ion-card>
+        <ion-item>
+          <ion-avatar class="border-dark" item-start>
+            <img [src]="profilePicture(user)" (error)="img.src = getDefaultProfilePic(user)"
+            #img alt="profile" class="profile-picture">
+          </ion-avatar>
+          <h2>{{user.firstname}} {{user.lastname}}</h2>
+          <p>
+            <i class="fa fa-calendar" item-start></i>
+            {{getDateRated(user)}}
+          </p>
+          <i class="fa fa-chevron-right" item-end></i>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+  </div>
+  <ion-card padding text-wrap class="not-found" *ngIf="!ratedUsers || (ratedUsers && ratedUsers.length < 1)">
+    <i class="fa fa-4x fa-calendar"></i>
+    <p>You have not rated anyone yet</p>
+  </ion-card>
+</ion-content> -->

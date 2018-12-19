@@ -1,0 +1,21 @@
+page-filter {
+    .filter {
+        text-align: center;
+        img {
+            max-width: 40%;
+            padding: 10px;
+        }
+        p {
+            margin-top: 0;
+            font-size: 1.2em;
+            color: $primary;
+        }
+        .col:nth-child(odd){
+            border-right: 1px solid $secondary;
+            border-bottom: 1px solid $secondary;
+        }
+        .col:nth-child(even){
+            border-bottom: 1px solid $secondary;
+        }
+    }
+}

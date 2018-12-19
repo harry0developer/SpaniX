@@ -1,0 +1,25 @@
+page-post-job {
+    .scroll-content{
+        background-color: $light-grey;
+    }
+    .button.border {
+        width: 90%;
+        margin: 0 auto !important;
+    }
+
+    ion-label{
+        color: $primary !important;
+    }
+
+    ion-select, ion-textarea {
+        font-weight: bold;
+    }
+
+    ion-item.item {
+        margin: 0;
+    }
+
+    ion-input {
+        color: $dark !important;
+    }
+}

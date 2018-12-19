@@ -1,0 +1,121 @@
+<ion-header no-shadow no-border>
+  <ion-navbar color="dark">
+    <ion-title>User Profile</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="top" *ngIf="candidate">
+    <div class="animated slideInLeft status" [hidden]="!hired">
+      <i class="fa fa-calendar" item-start></i>
+      Offered Job
+    </div>
+    <div class="animated slideInRight distance" [hidden]="!candidate.distance">
+      <ion-icon name="pin" item-start></ion-icon>
+      {{candidate.distance}} KM
+    </div>
+    <img [src]="profilePicture(candidate)" (error)="img.src = getDefaultProfilePic(candidate)" #img class="circle spin" alt="profile">
+    <h2 class="animated slideInRight">{{candidate.firstname}} {{candidate.lastname}} </h2>
+    <p class="animated slideInLeft">{{candidate.title || candidate.type}}</p>
+    <span class="animated slideInDown">
+      <rating *ngIf="fromPage !== 'Appointments'" [float]="true" [(ngModel)]="ratings" [readonly]="true"></rating>
+      <rating *ngIf="fromPage === 'Appointments'" [float]="true" [(ngModel)]="ratings" (click)="rate(ratings)"></rating>
+    </span>
+
+    <div class="row summary" *ngIf="!isRecruiter()">
+      <!-- recruiter -->
+      <div class="col animated slideInDown col-6">
+        <h2>{{postedJobs?.length}}</h2>
+        <p *ngIf="postedJobs?.length != 1">Jobs Posted</p>
+        <p *ngIf="postedJobs?.length == 1">Job Posted</p>
+      </div>
+      <div class="col animated slideInDown col-6">
+        <h2>{{appliedJobs?.length || 0}}</h2>
+        <p>Applied Jobs</p>
+      </div>
+      <div class="col animated slideInDown col-6">
+        <h2>{{appliedUsers?.length || 0}}</h2>
+        <p>Applied users</p>
+      </div>
+    </div>
+
+    <div class="row summary" *ngIf="isRecruiter()">
+      <!-- candidate -->
+      <div class="col animated slideInDown col-4">
+        <h2>{{appliedJobs?.length || 0}}</h2>
+        <p *ngIf="appliedJobs?.length != 1">Jobs Applied</p>
+        <p *ngIf="appliedJobs?.length == 1">Job Applied</p>
+      </div>
+      <div class="col animated slideInDown col-4">
+        <h2>{{viewedJobs?.length || 0}}</h2>
+        <p *ngIf="viewedJobs?.length != 1">Jobs Viewed</p>
+        <p *ngIf="viewedJobs?.length == 1">Job Viewed</p>
+      </div>
+      <div class="col animated slideInDown col-4">
+        <h2>{{appointment?.length || 0}}</h2>
+        <p *ngIf="appointments?.length != 1">Appointments</p>
+        <p *ngIf="appointments?.length == 1">Appointment</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="candidate" class="info">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-6 class="animated zoomIn">
+          <h2>
+            <i [ngClass]="candidate.gender === 'Male' ? 'fa fa-male enlarge' : 'fa fa-female enlarge'" item-start></i>
+          </h2>
+          <p>{{candidate.gender}}</p>
+        </ion-col>
+        <ion-col col-6 class="animated zoomIn">
+          <h2>
+            <i class="fa fa-calendar" item-start></i>
+          </h2>
+          <p>{{candidate.dob}}</p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-6 class="animated zoomIn" [hidden]="settings.hide_dob">
+          <h2>
+            <i class="fa fa-users" item-start></i>
+          </h2>
+          <p>{{candidate.race}}</p>
+        </ion-col>
+        <ion-col col-6 class="animated zoomIn" [hidden]="settings.hide_nationality">
+          <h2>
+            <i class="fa fa-flag" item-start></i>
+          </h2>
+          <p>{{candidate.nationality}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-6 class="animated zoomIn" [hidden]="settings.hide_phone">
+          <h2>
+            <i class="fa fa-phone enlarge" item-start></i>
+          </h2>
+          <p>{{candidate.phone}}</p>
+        </ion-col>
+        <ion-col col-6 class="animated zoomIn" [hidden]="settings.hide_email">
+          <h2>
+            <i class="fa fa-envelope" item-start></i>
+          </h2>
+          <p>{{candidate.email}}</p>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </div>
+
+  <div *ngIf="isRecruiter()">
+    <div padding [hidden]="hired">
+      <button ion-button color="light" class="dark" block (click)="offerUserEmployment(candidate)">Offer Employment</button>
+    </div>
+    <div padding [hidden]="!hired">
+      <button ion-button color="light" class="dark" block (click)="removeAppointmentActionSheep(candidate)">Cancel Appointment</button>
+    </div>
+  </div>
+
+</ion-content>

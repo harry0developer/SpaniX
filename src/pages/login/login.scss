@@ -1,0 +1,38 @@
+page-login {
+    .content{
+        background-color: $primary !important;
+    }
+    .item-inner {
+        border-bottom: none !important;
+    }
+
+    ion-item {
+        border: 1px solid $secondary !important;
+        margin: 10px 0 !important;
+    }
+
+    .controls {
+        text-align: center;
+        color: $white;
+        font-weight: lighter;
+
+        .col {
+            padding: 0;
+            margin: 0;
+        }
+    }
+
+    p {
+        color: $white;
+        text-align: center;
+    }
+    .label {
+        color: $primary !important;
+    }
+
+    .button.eye {
+        color: $primary;
+        font-size: 1em;
+    }
+
+}

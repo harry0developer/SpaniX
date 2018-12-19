@@ -1,0 +1,43 @@
+page-my-jobs {
+	.content {
+		background-color: $light-grey;
+	}
+
+	.manage-job .item-md [item-end] {
+		margin: -50px 10px 0 0;
+	}
+
+	ion-list {
+		margin: 5px 0 !important;
+	}
+
+	ion-item{
+		margin: 0 !important;
+		min-height: 90px !important;
+		h2 {
+			font-weight: bold !important;
+			color: $dark;
+		}
+		p {
+			padding-top: 5px;
+			color: $dark;
+		}
+	}
+
+	.item-divider {
+		background-color: $white !important;
+		color: $primary !important;
+		border-top: 1px solid $secondary !important;
+		padding: 5px 10px !important;
+		[item-start], [item-end] {
+			margin: 8px 0;
+			font-size: .9em;
+		}
+		i {
+			padding-right: 5px;
+		}
+	}
+	img {
+		padding: 6px;
+	}
+}
