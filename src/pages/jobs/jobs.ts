@@ -10,7 +10,7 @@ import { locateHostElement } from '@angular/core/src/render3/instructions';
 import { ConnectionProvider } from '../../providers/connection/connection';
 import { bounceIn } from '../../util/animations';
 import { Profile } from '../../models/Profile';
-import { LocationModel } from '../../models/location';
+import { Location } from '../../models/location';
 
 @IonicPage()
 @Component({
@@ -26,7 +26,7 @@ export class JobsPage {
   jobs: any = [];
   tempJobs: any = [];
   profile: Profile;
-  location: LocationModel;
+  location: Location;
   items = ['item 1', 'item 2', 'item 3', 'item 4', 'item 5'];
 
   constructor(

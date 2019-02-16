@@ -7,8 +7,8 @@ import { PostJobPage } from '../post-job/post-job';
 import { bounceIn } from '../../util/animations';
 import 'rxjs/add/operator/debounceTime.js';
 import { Profile } from '../../models/Profile';
-import { LocationModel } from '../../models/location';
-import { Rating } from '../../models/Ratings';
+import { Location } from '../../models/location';
+import { Rating, Rate } from '../../models/Ratings';
 import { UserDetailsPage } from '../user-details/user-details';
 
 @IonicPage()
@@ -26,8 +26,8 @@ export class CandidatesPage {
   activeCategory: string = 'All';
   categories: any = [];
   profile: Profile;
-  location: LocationModel;
-  ratings: Array<Rating>;
+  location: Location;
+  ratings: Rate;
 
   constructor(
     public navCtrl: NavController,
@@ -45,8 +45,10 @@ export class CandidatesPage {
 
   ionViewWillEnter() {
     this.events.subscribe(this.dataProvider.USER_RATED, () => {
-      this.ratings = this.dataProvider.getRatings();
-      this.setUserRatings();
+      this.ratings = this.dataProvider.getMyRatingsData(this.profile.user_id);
+      console.log(this.ratings);
+
+      // this.setUserRatings();
     });
   }
 
@@ -58,22 +60,22 @@ export class CandidatesPage {
       this.searching = false;
       this.setFilteredCandidates();
     });
-    this.ratings = this.dataProvider.getRatings();
-    this.setUserRatings();
+    this.ratings = this.dataProvider.getMyRatingsData(this.profile.user_id);
+    // this.setUserRatings();
 
   }
 
-  setUserRatings() {
-    if (this.ratings && this.candidates) {
-      this.ratings.map(user_rates => {
-        for (let i = 0; i < this.candidates.length; i++) {
-          if (user_rates.user_id_fk === this.candidates[i].user_id) {
-            this.candidates[i].rating = user_rates.rating;
-          }
-        }
-      })
-    }
-  }
+  // setUserRatings() {
+  //   if (this.ratings && this.candidates) {
+  //     this.ratings.map(user_rates => {
+  //       for (let i = 0; i < this.candidates.length; i++) {
+  //         if (user_rates.user_id_fk === this.candidates[i].user_id) {
+  //           this.candidates[i].rating = user_rates.rating;
+  //         }
+  //       }
+  //     })
+  //   }
+  // }
 
   setFilteredCandidates() {
     this.location = this.dataProvider.getLocation();

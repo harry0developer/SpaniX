@@ -27,7 +27,7 @@ export class JobDetailsPage {
     public dataProvider: DataProvider, public navParams: NavParams,
     private feedbackProvider: FeedbackProvider,
     private socialSharing: SocialSharing) {
-    this.profile = JSON.parse(localStorage.getItem("user"));
+    this.profile = this.dataProvider.getUserProfile();
     this.didView = false;
   }
 
@@ -217,27 +217,33 @@ export class JobDetailsPage {
 
 
   shareJobWithFacebook(job) {
+    let shared: boolean = false;
     this.socialSharing.shareViaFacebook(job, "img.png", "www.job.co.za").then(res => {
-      this.addToSharedJobs(job, 'facebook');
+      shared = true;
     }).catch(err => {
-      return false;
-    })
+      console.log('Error shareJobWithFacebook');
+    });
+    return shared;
   }
 
   shareJobWithTwitter(job) {
+    let shared: boolean = false;
     this.socialSharing.shareViaTwitter(job, "img.png", "www.job.co.za").then(res => {
-      this.addToSharedJobs(job, 'twitter');
+      shared = true;
     }).catch(err => {
-      return false;
-    })
+      console.log('Error shareJobWithTwitter');
+    });
+    return shared;
   }
 
   shareJobWithInstagram(job) {
+    let shared: boolean = false;
     this.socialSharing.shareViaInstagram(job, "img.png").then(res => {
-      this.addToSharedJobs(job, 'instagram');
+      shared = true;
     }).catch(err => {
-      return false;
-    })
+      console.log('Error shareJobWithInstagram');
+    });
+    return shared;
   }
 
   unsubscribeFromSocialEvents() {

@@ -49,6 +49,9 @@ page-job-details{
             font-size: 2em;
             padding: 0 10px;
         }
+        i.small {
+            font-size: 1em;
+        }
         i.map {
             padding-right: 20px;
             font-size: 2.2em;
@@ -58,12 +61,14 @@ page-job-details{
         }
         .label {
             p {
-                font-size: 1em;
+                font-size: 1.1em;
+                padding: 5px 0;
                 color: $dark !important;
             }
             h2 {
                 font-weight: bold;
             }
+            
             h2, p {
                 color: $primary
             }

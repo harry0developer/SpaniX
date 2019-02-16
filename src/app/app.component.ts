@@ -45,7 +45,7 @@ export class MyApp {
     this.defaultImg = `${this.dataProvider.getMediaUrl()}Male.svg`;
 
     this.events.subscribe(this.dataProvider.LOCATION_SET, (location) => {
-      this.dataProvider.setLocation(location);
+      this.dataProvider.saveUserLocation(location);
     });
 
     this.events.subscribe(this.dataProvider.NETWORK_CONNECTED, () => {
@@ -56,6 +56,11 @@ export class MyApp {
     this.events.subscribe(this.dataProvider.NETWORK_DISCONNECTED, () => {
       this.feedbackProvider.presentToast("You have lost internet connection");
       this.nav.push(ConnectionPage);
+    });
+
+    this.events.subscribe(this.dataProvider.USER_LOGGED_IN, (user) => {
+      console.log(`${user.firstname} has logged in`);
+      this.getLocation();
     });
 
     this.events.subscribe(this.dataProvider.USER_LOGGED_IN, (profile) => {
@@ -85,7 +90,7 @@ export class MyApp {
 
   getLocation() {
     this.locationProvider.getLocation().then(location => {
-      this.dataProvider.setLocation(location);
+      this.dataProvider.saveUserLocation(location);
       this.events.publish(this.dataProvider.LOCATION_SET, location);
     }).catch(err => {
       console.log(err);
@@ -93,10 +98,6 @@ export class MyApp {
   }
 
   openPage(page) {
-    this.nav.setRoot(page.component);
-  }
-
-  loadProfile(page, user) {
     this.nav.setRoot(page.component);
   }
 

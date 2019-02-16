@@ -6,10 +6,14 @@
 
 <ion-content>
   <div class="top" *ngIf="candidate">
-    <div class="animated slideInLeft status" [hidden]="!hired">
+      <div class="status-info animated slideInDown" *ngIf="hasAppointments()">
+        <i class="fa fa-info-circle"></i>
+        Job offered <span class="date">{{ appointmentDate }}</span>
+      </div>
+    <!-- <div class="animated slideInLeft status" [hidden]="!hired">
       <i class="fa fa-calendar" item-start></i>
       Offered Job
-    </div>
+    </div> -->
     <div class="animated slideInRight distance" [hidden]="!candidate.distance">
       <ion-icon name="pin" item-start></ion-icon>
       {{candidate.distance}} KM
@@ -22,8 +26,8 @@
       <rating *ngIf="fromPage === 'Appointments'" [float]="true" [(ngModel)]="ratings" (click)="rate(ratings)"></rating>
     </span>
 
+    
     <div class="row summary" *ngIf="!isRecruiter()">
-      <!-- recruiter -->
       <div class="col animated slideInDown col-6">
         <h2>{{postedJobs?.length}}</h2>
         <p *ngIf="postedJobs?.length != 1">Jobs Posted</p>
@@ -40,7 +44,6 @@
     </div>
 
     <div class="row summary" *ngIf="isRecruiter()">
-      <!-- candidate -->
       <div class="col animated slideInDown col-4">
         <h2>{{appliedJobs?.length || 0}}</h2>
         <p *ngIf="appliedJobs?.length != 1">Jobs Applied</p>

@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, Events, ActionSheetController } fr
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { DataProvider } from '../../providers/data/data';
 import { LoginPage } from '../login/login';
+import { Rating } from '../../models/Ratings';
 
 
 @IonicPage()
@@ -21,14 +22,16 @@ export class UserDetailsPage {
   viewedCandidates: any = [];
   appointments: any = [];
   appliedUsers: any = [];
-  stars: number;
 
-  ratings: any = {};
   isRated: boolean = false;
+  iRated: Array<Rating>;
+  ratedMe: Array<Rating>;
   rating: number;
+
   fromPage: string;
   didView: boolean;
   countViews: number;
+  appointmentDate: string;
 
   constructor(
     public navCtrl: NavController, public navParams: NavParams,
@@ -43,7 +46,7 @@ export class UserDetailsPage {
 
   ionViewWillLeave() {
     if (this.isRated) {
-      this.rateCandidate();
+      // this.rateCandidate();
       console.log("User rated :)");
     }
   }
@@ -55,27 +58,37 @@ export class UserDetailsPage {
     this.defaultImg = `${this.dataProvider.getMediaUrl()}${this.profile.gender}.svg`;
     const settingz = this.dataProvider.getSettings();
     this.settings = this.getUserSettings(this.candidate, settingz);
-    this.ratings = this.dataProvider.getMyRating(this.candidate.user_id) || 0;
     this.fromPage = this.navParams.get('page');
+    const rateObject = this.dataProvider.getMyRatingsData(this.profile.user_id);
     this.hasViewedCandidate();
+    this.setData();
 
     this.events.subscribe(this.dataProvider.APPOINTMENTS_UPDATED, () => {
-      this.appointments = this.dataProvider.getAppointments();
-      this.appointments = [];
-      this.appointments.map(candidate => {
-        if (candidate.candidate_id_fk === this.candidate.user_id) {
-          this.appointments.push(candidate);
-        }
-      });
+      this.appointments = this.dataProvider.getMyAppointments(this.candidate.user_id, this.dataProvider.USER_TYPE_CANDIDATE);
     });
 
-    this.setData();
 
     this.hasBeenHired(this.candidate);
 
     if (!this.profile || !this.profile.type) {
       this.logout();
     }
+  }
+
+  loadMyAppliedJobs() {
+  }
+
+  hasAppointments(): boolean {
+    let dateCreated: string = "";
+    this.appointments.forEach(app => {
+      if (app.user.user_id === this.profile.user_id) {
+        console.log(app.appointment.date_created);
+
+        dateCreated = app.appointment.date_created;
+      }
+    });
+    this.appointmentDate = this.dataProvider.getDateTime(dateCreated);
+    return this.dataProvider.isDateValid(dateCreated);
   }
 
   private hasViewedCandidate() {
@@ -130,37 +143,45 @@ export class UserDetailsPage {
   private setData() {
     const userType = this.candidate.type;
     const userId = this.candidate.user_id;
-    console.log('profile', this.candidate);
-
     this.postedJobs = this.dataProvider.getMyPostedJobs(userId);
     this.appliedUsers = this.dataProvider.getMyAppliedJobs(userId, userType);
 
     this.viewedCandidates = this.dataProvider.getMyViewedCandidates(userId);
-    this.appointments = this.dataProvider.getMyAppointments(userId, userType);
+    this.appointments = this.dataProvider.getMyAppointments(this.candidate.user_id, this.dataProvider.USER_TYPE_CANDIDATE);
     this.appliedJobs = this.dataProvider.getDistinct(this.appliedUsers);
   }
 
-  calculateRatings() {
-    if (!this.ratings || !this.ratings.user_id_fk) {
-      return {
-        rating: this.rating,
-        user_id_fk: this.candidate.user_id,
-        count_raters: 1,
-        date_rated: this.dataProvider.getDate()
-      }
-    } else {
-      return {
-        rating: (parseInt(this.ratings.rating) + this.rating) / 2,
-        user_id_fk: this.candidate.user_id,
-        count_raters: parseInt(this.ratings.count_raters) + 1,
-        date_rated: this.dataProvider.getDate()
-      }
-    }
+  // calculateRatings() {
+  //   if (!this.ratings || !this.ratings.user_id_fk) {
+  //     return {
+  //       rating: this.rating,
+  //       user_id_fk: this.candidate.user_id,
+  //       count_raters: 1,
+  //       date_rated: this.dataProvider.getDate()
+  //     }
+  //   } else {
+  //     return {
+  //       rating: (parseInt(this.ratings.rating) + this.rating) / 2,
+  //       user_id_fk: this.candidate.user_id,
+  //       count_raters: parseInt(this.ratings.count_raters) + 1,
+  //       date_rated: this.dataProvider.getDate()
+  //     }
+  //   }
+  // }
+
+
+  getRatings(rating) {
+    return this.ratedMe.length > 0 ? (rating + this.rating) / 2 : rating;
   }
 
-  rateCandidate() {
+  rateCandidate(ratings) {
     let data;
-    data = this.calculateRatings();
+    data = {
+      rated_id_fk: this.candidate.user_id,
+      rater_id_fk: this.profile.user_id,
+      rating: this.getRatings(ratings),
+      date_rated: this.dataProvider.getDate()
+    };
     this.dataProvider.postDataToDB(data, 'updateRatings').then(res => {
       this.events.publish(this.dataProvider.USER_RATED);
     }).catch(err => {

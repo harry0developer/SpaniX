@@ -15,6 +15,20 @@ page-user-details {
         color: $white !important;
     }
 
+    .status-info {
+        margin: 0 10px;
+        padding: 10px 0;
+        color: $secondary;
+        border-radius: 4px;
+        i {
+            font-size: 1.2em;
+            padding-right: 10px; 
+        }
+        .date {
+            font-weight: bold;
+        }
+    }
+
     .top{
         text-align: center;
         background-color: $primary !important;

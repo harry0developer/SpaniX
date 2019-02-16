@@ -6,11 +6,12 @@ import * as moment from 'moment';
 import { Events } from 'ionic-angular';
 import { FeedbackProvider } from '../feedback/feedback';
 import { Profile } from '../../models/Profile';
-import { LocationModel } from '../../models/location';
 import { ViewedJob, SharedJob, AppliedJob, ViewedCandidate } from '../../models/jobs';
 import { Appointment } from '../../models/appointment';
-import { Rating } from '../../models/Ratings';
+import { Rating, Rate } from '../../models/Ratings';
 import { Job } from '../../models/job';
+import { Location } from '../../models/location';
+import { UserAppointment } from '../../models/user-appointment';
 
 let apiUrl = 'http://localhost:8888/spani/api/';
 let media = `${apiUrl}uploads/users/`;
@@ -171,7 +172,6 @@ export class DataProvider {
     });
   }
 
-
   setAppliedJobs(jobs) {
     this.appliedJobs = jobs;
   }
@@ -180,25 +180,24 @@ export class DataProvider {
     this.jobs = jobs;
   }
 
-  setLocation(location) {
-    localStorage.setItem('location', JSON.stringify(location));
-    this.location = location;
-  }
-
   getDate() {
     var date = moment.now();
     return moment(date).format("MM/DD/YYYY HH:mm");
   }
 
   getDateTime(date) {
-    return moment(date, 'MM/DD/YYYY').fromNow();
+    return moment(date).fromNow();
+  }
+
+  isDateValid(date): boolean {
+    return moment(date).isValid();
   }
 
   getJobs() {
     return this.jobs;
   }
 
-  getLocation(): LocationModel {
+  getLocation(): Location {
     return this.location;
   }
 
@@ -238,12 +237,7 @@ export class DataProvider {
     return this.settings || [];
   }
 
-  getRatings() {
-    return this.ratings || [];
-  }
-
-
-  getUsersIRated(userId): Array<Rating> {
+  private _getUsersIRated(userId): Array<Rating> {
     let rated = [];
     if (this.ratings.length) {
       this.ratings.forEach(ratingObj => {
@@ -255,8 +249,7 @@ export class DataProvider {
     return rated;
   }
 
-
-  getUsersRatedMe(userId): Array<Rating> {
+  private _getUsersRatedMe(userId): Array<Rating> {
     let rated = [];
     if (this.ratings.length) {
       this.ratings.forEach(ratingObj => {
@@ -268,7 +261,7 @@ export class DataProvider {
     return rated;
   }
 
-  getMyRating(userId: number): number {
+  private _getMyRating(userId: number): number {
     let myRating = 0;
     let countRaters = 0;
     if (this.ratings.length) {
@@ -282,7 +275,14 @@ export class DataProvider {
     return myRating / countRaters;
   }
 
-
+  getMyRatingsData(userId: number): Rate {
+    const rateObject: Rate = {
+      iRated: this._getUsersIRated(userId),
+      ratedMe: this._getUsersRatedMe(userId),
+      rating: this._getMyRating(userId)
+    };
+    return rateObject;
+  }
 
   getCategories() {
     return new Promise(resolve => {
@@ -323,20 +323,6 @@ export class DataProvider {
     return this.mapJobs(mySharedJobs);
   }
 
-
-  // mapMyJobs(myJobs) {
-  //   const jobs = this.getJobs();
-  //   const mappedJobs = [];
-  //   jobs.forEach(job => {
-  //     myJobs.forEach(myJob => {
-  //       if (job.job_id === myJob.job_id_fk) {
-  //         mappedJobs.push(Object.assign(job, myJob));
-  //       }
-  //     });
-  //   });
-  //   return mappedJobs;
-  // }
-
   getMyPostedJobs(userId: number): Array<Job> {
     const jobs = [];
     if (this.jobs.length) {
@@ -346,7 +332,6 @@ export class DataProvider {
         }
       });
     }
-
     return jobs;
   }
 
@@ -380,7 +365,6 @@ export class DataProvider {
     return this.mapJobs(appliedJobs)
   }
 
-
   getMyAppointments(userId: number, userType: string): Array<Profile> {
     const myAppointments = [];
     if (this.appointments.length) {
@@ -392,36 +376,38 @@ export class DataProvider {
         }
       });
     }
-    return userType === this.USER_TYPE_CANDIDATE ?
-      this.getAppointmentsRecruiters(myAppointments) : this.getAppointmentsCandidates(myAppointments);
+    return this.mapAppointments(myAppointments, userId, userType);
   }
 
-  getAppointmentsRecruiters(appointments: Appointment[]): Array<Profile> {
-    let users = [];
-    if (this.appointments.length) {
-      appointments.forEach(app => {
-        this.candidates.forEach(can => {
-          if (can.user_id === app.candidate_id_fk) {
-            users.push(Object.assign(can, app));
+  private mapAppointments(appointments: Array<Appointment>, userId: number, type: string): Array<Profile> {
+    const appz = [];
+    appointments.forEach(app => {
+      if (this.USER_TYPE_CANDIDATE === type && app.candidate_id_fk === userId) {
+        this.recruiters.forEach(user => {
+          if (user.user_id === app.recruiter_id_fk) {
+            const userWithAppointment = {
+              user,
+              appointment: app
+            }
+            appz.push(userWithAppointment);
           }
         });
-      })
-    }
-    return users;
-  }
+      } else if (this.USER_TYPE_RECRUITER === type && app.recruiter_id_fk === userId) {
+        this.candidates.forEach(user => {
+          if (user.user_id === app.candidate_id_fk) {
+            const userWithAppointment: UserAppointment = {
+              user,
+              appointment: app
+            }
+            appz.push(userWithAppointment);
+          }
+        });
+      }
+    });
 
-  getAppointmentsCandidates(appointments: Appointment[]): Array<Profile> {
-    let users = [];
-    if (this.appointments.length) {
-      appointments.forEach(app => {
-        this.recruiters.forEach(rec => {
-          if (rec.user_id === app.recruiter_id_fk) {
-            users.push(Object.assign(rec, app));
-          }
-        });
-      })
-    }
-    return users;
+    console.log(appz);
+
+    return appz;
   }
 
 
@@ -444,7 +430,7 @@ export class DataProvider {
         name = candidate.firstname + ' ' + candidate.lastname;
         return name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
       });
-    } {
+    } else {
       console.log("No candidates ");
     }
   }
@@ -468,15 +454,28 @@ export class DataProvider {
     });
   }
 
-
-  getLocalStorageItem(item): object {
-    return JSON.parse(localStorage.getItem(item));
+  saveUserProfile(profile) {
+    localStorage.setItem('user', JSON.stringify(profile));
   }
 
-  setLocalStorageItem(key, value) {
-    if (key && value) {
-      localStorage.setItem(key, value);
-    }
+  getUserProfile(): Profile {
+    return JSON.parse(localStorage.getItem('user')) || null;
+  }
+
+  saveUserIntro(intro: boolean) {
+    localStorage.setItem('intro', JSON.stringify(intro));
+  }
+
+  getUserIntro(): boolean {
+    return JSON.parse(localStorage.getItem('intro'));
+  }
+
+  saveUserLocation(location) {
+    localStorage.setItem('location', JSON.stringify(location));
+  }
+
+  getUserLocation(): Location {
+    return JSON.parse(localStorage.getItem('location'));
   }
 
   initializeData() {
@@ -622,7 +621,6 @@ export class DataProvider {
     let d = R * c;
 
     return d * this.KM; //convert miles to km
-
   }
 
   toRad(x) {

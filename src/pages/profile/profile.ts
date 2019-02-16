@@ -57,13 +57,8 @@ export class ProfilePage {
     this.defaultImg = `${this.dataProvider.getMediaUrl()}${this.profile.gender}.svg`;
     this.getAppointments();
     const setz = this.getSettings();
-    const ratings = this.dataProvider.getMyRating(this.profile.user_id);
+    const ratings = this.dataProvider.getMyRatingsData(this.profile.user_id);
 
-    if (ratings) {
-      this.stars = ratings;
-    } else {
-      this.stars = 0;
-    }
 
     this.events.subscribe(this.dataProvider.USER_PROFILE_UPDATED, () => {
       this.profile = this.dataProvider.getProfile();

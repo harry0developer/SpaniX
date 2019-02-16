@@ -49,8 +49,8 @@ import { DashboardPage } from '../pages/dashboard/dashboard';
 import { SharedJobsPage } from '../pages/shared-jobs/shared-jobs';
 import { CardDetailsPage } from '../pages/card-details/card-details';
 import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/shrinking-segment-header';
-import { RatedPage } from '../pages/rated/rated';
 import { UserDetailsPage } from '../pages/user-details/user-details';
+import { RatingsPage } from '../pages/ratings/ratings';
 
 @NgModule({
   declarations: [
@@ -82,7 +82,7 @@ import { UserDetailsPage } from '../pages/user-details/user-details';
     SharedJobsPage,
     ShrinkingSegmentHeader,
     CardDetailsPage,
-    RatedPage
+    RatingsPage
   ],
   imports: [
     BrowserModule,
@@ -123,7 +123,7 @@ import { UserDetailsPage } from '../pages/user-details/user-details';
     SharedJobsPage,
     ShrinkingSegmentHeader,
     CardDetailsPage,
-    RatedPage
+    RatingsPage
   ],
   providers: [
     StatusBar,

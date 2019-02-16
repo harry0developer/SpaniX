@@ -126,7 +126,7 @@ export class SettingsPage {
   }
 
   isLocationSet() {
-    return localStorage.getItem('location') === '' ? false : true;
+    return this.dataProvider.getUserLocation() ? false : true;
   }
 
 

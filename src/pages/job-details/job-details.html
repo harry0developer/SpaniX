@@ -61,6 +61,18 @@
           <ion-badge color="dark" class="animated slideInUp" *ngFor="let skill of getSkills(job.skills)">{{skill}}</ion-badge>
         </ion-item>
 
+        <ion-item text-wrap>
+          <i class="animated slideInLeft fa fa-user" item-start></i>
+          <h2 class="animated slideInDown">Posted by <span class="black">{{ user.firstname }} {{user.lastname}}</span></h2>
+          <p class="animated slideInUp">
+            <i class="animated slideInLeft fa fa-envelope small" item-start></i>
+            {{ user.email}} 
+          <br>
+            <i class="animated slideInLeft fa fa-phone small" item-start></i>
+            {{ user.phone}} 
+          </p>
+        </ion-item>
+
       </ion-card-content>
 
     <div *ngIf="isCandidate()">
@@ -70,10 +82,6 @@
       <div padding [hidden]="!applied">
         <button ion-button  color="dark" class="dark" block (click)="confirmWithdrawApplication(job)">Cancel Application</button>
       </div>
-    </div>
-
-    <div padding [hidden]="isCandidate()">
-      <!-- <button ion-button  color="light" class="light" block (click)="editJob(job)">Edit Job</button> -->
     </div>
 
     </ion-list>

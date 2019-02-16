@@ -4,9 +4,6 @@ import { SignupPage } from '../signup/signup';
 import { ForgotPasswordPage } from '../forgot-password/forgot-password';
 import { DataProvider } from '../../providers/data/data';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
-import { CandidatesPage } from '../candidates/candidates';
-import { JobsPage } from '../jobs/jobs';
-import { LocationProvider } from '../../providers/location/location';
 import { ErrorPage } from '../error/error';
 import { DashboardPage } from '../dashboard/dashboard';
 import { IntroPage } from '../intro/intro';
@@ -33,7 +30,6 @@ export class LoginPage {
   constructor(
     private navCtrl: NavController,
     private dataProvider: DataProvider,
-    private locationProvider: LocationProvider,
     private feedbackProvider: FeedbackProvider,
     private events: Events,
     private modalCtrl: ModalController
@@ -44,19 +40,24 @@ export class LoginPage {
     if (!this.showedIntro()) {
       this.presentIntroModal();
     }
-    this.autoLogin();
+
+    const user = this.dataProvider.getUserProfile();
+    if (!!user) {
+      this.events.publish(this.dataProvider.USER_LOGGED_IN, user);
+      this.navCtrl.setRoot(DashboardPage);
+    }
   }
 
   presentIntroModal() {
     const introModal = this.modalCtrl.create(IntroPage);
     introModal.onDidDismiss(() => {
-      this.dataProvider.setLocalStorageItem('intro', true);
+      this.dataProvider.saveUserIntro(true);
     });
     introModal.present();
   }
 
   showedIntro(): boolean {
-    return !!this.dataProvider.getLocalStorageItem('intro');
+    return !!this.dataProvider.getUserIntro();
   }
 
   setPassword(password) {
@@ -73,14 +74,8 @@ export class LoginPage {
     return false;
   }
 
-  autoLogin() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user && user.email) {
-      this.init(user);
-    }
-  }
-
   init(user) {
+    this.dataProvider.saveUserProfile(user);
     this.events.publish(this.dataProvider.USER_LOGGED_IN, user);
     this.navCtrl.setRoot(DashboardPage);
   }
@@ -104,13 +99,11 @@ export class LoginPage {
     this.dataProvider.postDataToDB(this.data, 'login').then(res => {
       response = res;
       if (response.data) {
-        this.events.publish(this.dataProvider.USER_PROFILE_UPDATED, response.data);
-        this.feedbackProvider.dismissLoading();
         this.init(response.data);
       } else {
-        this.feedbackProvider.dismissLoading();
         this.feedbackProvider.presentAlert('Login failed', 'Username and password do not match');
       }
+      this.feedbackProvider.dismissLoading();
     }).catch(errors => {
       this.feedbackProvider.dismissLoading();
       this.feedbackProvider.presentErrorAlert('Login failed');
@@ -128,7 +121,6 @@ export class LoginPage {
 
   showPassword() {
     this.showPass = !this.showPass;
-
     if (this.showPass) {
       this.type = 'text';
     } else {

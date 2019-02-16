@@ -7,7 +7,9 @@ import { Rating } from 'ngx-rating';
 import { CardDetailsPage } from '../card-details/card-details';
 import { AppointmentsPage } from '../appointments/appointments';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
-import { RatedPage } from '../rated/rated';
+import { MyJobsPage } from '../my-jobs/my-jobs';
+import { Rate } from '../../models/Ratings';
+import { RatingsPage } from '../ratings/ratings';
 
 
 @IonicPage()
@@ -23,12 +25,10 @@ export class DashboardPage {
   postedJobs: any = [];
   appointments: any = [];
   sharedJobs: any = [];
-  rated: any = [];
   lastImage: string;
   defaultImg: string = '';
   stars: number;
-  ratings: Array<Rating> = [];
-
+  ratingsData: Rate;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -41,7 +41,12 @@ export class DashboardPage {
     this.profile = this.dataProvider.getProfile();
     this.defaultImg = `${this.dataProvider.getMediaUrl()}${this.profile.gender}.svg`;
 
-    this.stars = this.dataProvider.getMyRating(this.profile.user_id) || 0;
+    // this.stars = this.dataProvider.getMyRating(this.profile.user_id) || 0;
+
+    this.events.subscribe(this.dataProvider.USER_LOGGED_IN, user => {
+      this.profile = user;
+      this.init();
+    });
 
     this.events.subscribe(this.dataProvider.USER_PROFILE_UPDATED, () => {
       this.profile = this.dataProvider.getProfile();
@@ -80,23 +85,24 @@ export class DashboardPage {
     this.init();
   }
 
-
   init() {
     let userType;
     if (this.isRecruiter()) {
       userType = 'recruiter';
       this.postedJobs = this.dataProvider.getMyPostedJobs(this.profile.user_id);
-      this.viewedCandidates = this.dataProvider.getMyViewedCandidates(this.profile.user_id);
     } else {
       userType = 'candidate';
-      this.viewedJobs = this.dataProvider.getMyViewedJobs(this.profile.user_id, userType);
       this.appliedJobs = this.dataProvider.getMyAppliedJobs(this.profile.user_id, userType);
     }
+    this.viewedJobs = this.dataProvider.getMyViewedJobs(this.profile.user_id, userType);
     this.sharedJobs = this.dataProvider.getMySharedJobs(this.profile.user_id, userType);
-    const iRated = this.dataProvider.getUsersIRated(this.profile.user_id);
-    const ratedMe = this.dataProvider.getUsersRatedMe(this.profile.user_id);
+    // const iRated = this.dataProvider.getUsersIRated(this.profile.user_id);
+    // const ratedMe = this.dataProvider.getUsersRatedMe(this.profile.user_id);
+    // this.rated = iRated.concat(ratedMe);
 
-    this.rated = iRated.concat(ratedMe);
+    this.ratingsData = this.dataProvider.getMyRatingsData(this.profile.user_id);
+    console.log(this.ratingsData);
+
   }
 
   isRecruiter() {
@@ -119,12 +125,20 @@ export class DashboardPage {
     this.navCtrl.push(CardDetailsPage, { category: 'viewed' });
   }
 
+  viewPostedJobs() {
+    this.navCtrl.push(MyJobsPage);
+  }
+
   viewSharedJobs() {
     this.navCtrl.push(CardDetailsPage, { category: 'shared' });
   }
 
-  viewRated() {
-    this.navCtrl.push(RatedPage);
+  viewRaters() {
+    this.navCtrl.push(RatingsPage, { ratingsData: this.ratingsData });
+  }
+
+  getMyRaters(): number {
+    return this.ratingsData.ratedMe.length + this.ratingsData.iRated.length;
   }
 
 }

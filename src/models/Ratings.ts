@@ -1,6 +1,13 @@
 export interface Rating {
-    rating: number,
-    user_id_fk: number,
-    count_raters: number,
-    date_rated: string
+    date_rated: string,
+    rated_id_fk: string
+    rater_id_fk: string
+    rating: number
+    rating_id: string
+}
+
+export interface Rate {
+    iRated: Array<Rating>,
+    ratedMe: Array<Rating>,
+    rating: number
 }
