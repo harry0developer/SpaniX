@@ -43,7 +43,7 @@
           <p class="animated slideInRight">{{profile.title || profile.type}}</p>
         </ion-col>
         <ion-col col-4 class="animated slideInRight" >
-          <rating [float]="true" [(ngModel)]="stars" [readonly]="true" ></rating>
+          <rating [float]="true" [(ngModel)]="userRatings.rating" [readonly]="true" ></rating>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -9,6 +9,7 @@ import { Transfer, TransferObject } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 import { slideIn, listSlideUp } from '../../util/animations';
+import { Rate } from '../../models/Ratings';
 
 declare var cordova: any;
 
@@ -37,7 +38,7 @@ export class ProfilePage {
   };
   lastImage: string;
   defaultImg: string = '';
-  stars: number;
+  userRatings: Rate;
 
   constructor(
     private camera: Camera, private transfer: Transfer,
@@ -57,8 +58,7 @@ export class ProfilePage {
     this.defaultImg = `${this.dataProvider.getMediaUrl()}${this.profile.gender}.svg`;
     this.getAppointments();
     const setz = this.getSettings();
-    const ratings = this.dataProvider.getMyRatingsData(this.profile.user_id);
-
+    this.userRatings = this.dataProvider.getMyRatingsData(this.profile.user_id);
 
     this.events.subscribe(this.dataProvider.USER_PROFILE_UPDATED, () => {
       this.profile = this.dataProvider.getProfile();
@@ -113,7 +113,7 @@ export class ProfilePage {
   }
 
   getAppointments() {
-    const appointments = this.dataProvider.getAppointments();
+    const appointments = this.dataProvider.getInProgressAppointments();
     let myAppointments = [];
     appointments.forEach(appointment => {
       if (this.isRecruiter()) {

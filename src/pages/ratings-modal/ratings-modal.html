@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>Rate user</ion-title> 
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()">
+        Cancel
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+
+<ion-content padding>
+  <div class="top" *ngIf="user">
+    <div class="profile-image" >
+      <div class="imagex">
+        <img class="image animated slideInLeft" [src]="profilePicture(candidate)" (error)="img.src = getDefaultProfilePic(candidate)" #img alt="profile">
+        <span class="ratings animated slideInRight">
+         <i class="fa fa-star"></i> {{ updateUserRate }}
+        </span>
+      </div>
+    </div>
+    <h2 class="animated slideInLeft">{{user.firstname}} {{user.lastname}} </h2>
+    <p class="animated slideInRight">{{user.title || user.type}}</p>
+    <rating class="ratings-stars" [float]="true" [(ngModel)]="rating" (click)="rateUser(rating)"></rating>
+
+    <button ion-button round block [disabled]="rating <= 0" class="primary animated zoomIn" (click)="completeRating()" color="primary">Rate</button>
+  </div>
+
+</ion-content>

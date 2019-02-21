@@ -14,7 +14,7 @@
         #img>
     </div>
     <div class="animated slideInRight">
-      <rating [float]="true" [(ngModel)]="stars" [readonly]="true"></rating>
+      <rating [float]="true" [(ngModel)]="ratingsData.rating" [readonly]="true"></rating>
     </div>
     <h2 class="animated slideInLeft">{{profile.firstname}} {{profile.lastname}} </h2>
     <p class="animated slideInRight">{{profile.title || profile.type}}</p>

@@ -1,15 +1,20 @@
 <ion-header no-shadow no-border>
   <ion-navbar color="dark">
     <ion-title>User Profile</ion-title>
+    <ion-buttons end *ngIf="userCanBeRated">
+      <button ion-button icon-only (click)="presentRateUserModal(candidate)">
+        <ion-icon name="star"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <div class="top" *ngIf="candidate">
-      <div class="status-info animated slideInDown" *ngIf="hasAppointments()">
-        <i class="fa fa-info-circle"></i>
-        Job offered <span class="date">{{ appointmentDate }}</span>
-      </div>
+    <div class="status-info animated slideInDown" *ngIf="hasAppointments()">
+      <i class="fa fa-info-circle"></i>
+      Job offered <span class="date">{{ appointmentDate }}</span>
+    </div>
     <!-- <div class="animated slideInLeft status" [hidden]="!hired">
       <i class="fa fa-calendar" item-start></i>
       Offered Job
@@ -18,14 +23,21 @@
       <ion-icon name="pin" item-start></ion-icon>
       {{candidate.distance}} KM
     </div>
-    <img [src]="profilePicture(candidate)" (error)="img.src = getDefaultProfilePic(candidate)" #img class="circle spin" alt="profile">
+    <div class="profile-image">
+      <div class="imagex">
+        <img class="image animated slideInLeft" [src]="profilePicture(candidate)" (error)="img.src = getDefaultProfilePic(candidate)" #img alt="profile">
+        <span class="ratings animated slideInRight">
+         <i class="fa fa-star"></i> {{ updateUserRate }}
+        </span>
+      </div>
+    </div>
+
     <h2 class="animated slideInRight">{{candidate.firstname}} {{candidate.lastname}} </h2>
     <p class="animated slideInLeft">{{candidate.title || candidate.type}}</p>
-    <span class="animated slideInDown">
-      <rating *ngIf="fromPage !== 'Appointments'" [float]="true" [(ngModel)]="ratings" [readonly]="true"></rating>
-      <rating *ngIf="fromPage === 'Appointments'" [float]="true" [(ngModel)]="ratings" (click)="rate(ratings)"></rating>
-    </span>
-
+    <!-- <span class="animated slideInDown">
+      <rating *ngIf="!canRateUser" [float]="true" [(ngModel)]="userRating.rating" [readonly]="true"></rating>
+      <rating *ngIf="canRateUser" [float]="true" [(ngModel)]="ratings" (click)="rateUser(ratings)"></rating>
+    </span> -->
     
     <div class="row summary" *ngIf="!isRecruiter()">
       <div class="col animated slideInDown col-6">
@@ -117,7 +129,7 @@
       <button ion-button color="light" class="dark" block (click)="offerUserEmployment(candidate)">Offer Employment</button>
     </div>
     <div padding [hidden]="!hired">
-      <button ion-button color="light" class="dark" block (click)="removeAppointmentActionSheep(candidate)">Cancel Appointment</button>
+      <button ion-button color="light" class="dark" block (click)="completeAppointmentActionSheep(candidate)">Complete Appointment</button>
     </div>
   </div>
 

@@ -52,9 +52,9 @@
             <h2>{{user.firstname}} {{user.lastname}}</h2>
             <p class="title">{{user.title}}</p>
             <p>
-              <rating [float]="true" [(ngModel)]="user.rating" [readonly]="true" ></rating>
+              <rating [float]="true" [(ngModel)]="user.ratings.rating" [readonly]="true" ></rating>
             </p>
-            <p item-end class="distance">
+            <p item-end class="distance" *ngIf="user.distance" >
               <ion-icon name="pin"  item-start></ion-icon>
               {{user.distance}} KM
             </p>

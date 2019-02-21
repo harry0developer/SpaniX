@@ -46,7 +46,7 @@ export class CandidatesPage {
   ionViewWillEnter() {
     this.events.subscribe(this.dataProvider.USER_RATED, () => {
       this.ratings = this.dataProvider.getMyRatingsData(this.profile.user_id);
-      console.log(this.ratings);
+      console.log('Rating: ', this.ratings);
 
       // this.setUserRatings();
     });
@@ -61,7 +61,7 @@ export class CandidatesPage {
       this.setFilteredCandidates();
     });
     this.ratings = this.dataProvider.getMyRatingsData(this.profile.user_id);
-    // this.setUserRatings();
+
 
   }
 
@@ -78,11 +78,14 @@ export class CandidatesPage {
   // }
 
   setFilteredCandidates() {
+    let candidates = [];
     this.location = this.dataProvider.getLocation();
-    this.candidates = this.dataProvider.filterCandidates(this.searchTerm);
+    candidates = this.dataProvider.filterCandidates(this.searchTerm);
+
     if (this.location && this.location.lat && this.location.lng) {
-      this.candidates = this.dataProvider.applyHaversine(this.candidates, this.location.lat, this.location.lng);
+      candidates = this.dataProvider.applyHaversine(this.candidates, this.location.lat, this.location.lng);
     }
+    this.candidates = this.setCandidatesRating(candidates);
     this.tmpCandidates = this.candidates;
   }
 
@@ -102,6 +105,13 @@ export class CandidatesPage {
       this.candidates = this.tmpCandidates || [];
       this.candidates = this.candidates.filter(candidate => candidate.title.toLowerCase() === category.name.toLowerCase());
     }
+  }
+
+  setCandidatesRating(candidates): Profile {
+    for (let i = 0; i < candidates.length; i++) {
+      candidates[i].ratings = this.dataProvider.getMyRatingsData(candidates[i].user_id);
+    }
+    return candidates;
   }
 
   doRefresh(refresher) {

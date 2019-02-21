@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, ActionSheetController, ModalController } from 'ionic-angular';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { DataProvider } from '../../providers/data/data';
 import { LoginPage } from '../login/login';
-import { Rating } from '../../models/Ratings';
+import { Rating, Rate } from '../../models/Ratings';
+import { Error } from '../../models/error';
+import { RatingsModalPage } from '../ratings-modal/ratings-modal';
 
 
 @IonicPage()
@@ -24,9 +26,8 @@ export class UserDetailsPage {
   appliedUsers: any = [];
 
   isRated: boolean = false;
-  iRated: Array<Rating>;
-  ratedMe: Array<Rating>;
   rating: number;
+  userRating: Rate;
 
   fromPage: string;
   didView: boolean;
@@ -39,27 +40,30 @@ export class UserDetailsPage {
     private dataProvider: DataProvider,
     private events: Events,
     private actionSheetCtrl: ActionSheetController,
-    private ionEvent: Events
+    private ionEvent: Events,
+    private modalCtrl: ModalController,
   ) {
     this.didView = false;
   }
 
   ionViewWillLeave() {
     if (this.isRated) {
-      // this.rateCandidate();
-      console.log("User rated :)");
+      this.rateCandidate(this.rating);
+      console.log("User rated :)", this.rating);
     }
   }
 
   ionViewDidLoad() {
-    this.rating = 0;
     this.candidate = this.navParams.get('user');
     this.profile = this.dataProvider.getProfile();
     this.defaultImg = `${this.dataProvider.getMediaUrl()}${this.profile.gender}.svg`;
     const settingz = this.dataProvider.getSettings();
     this.settings = this.getUserSettings(this.candidate, settingz);
     this.fromPage = this.navParams.get('page');
-    const rateObject = this.dataProvider.getMyRatingsData(this.profile.user_id);
+
+    this.userRating = this.dataProvider.getMyRatingsData(this.candidate.user_id);
+    this.rating = 0;
+
     this.hasViewedCandidate();
     this.setData();
 
@@ -82,13 +86,26 @@ export class UserDetailsPage {
     let dateCreated: string = "";
     this.appointments.forEach(app => {
       if (app.user.user_id === this.profile.user_id) {
-        console.log(app.appointment.date_created);
-
         dateCreated = app.appointment.date_created;
       }
     });
     this.appointmentDate = this.dataProvider.getDateTime(dateCreated);
     return this.dataProvider.isDateValid(dateCreated);
+  }
+
+  get canRateUser(): boolean {
+    return this.fromPage === 'Appointments' || this.fromPage === 'Ratings';
+  }
+
+  get updateUserRate() {
+    const rate = this.rating > 0 ? (this.userRating.rating + this.rating) / 2 : this.userRating.rating;
+    return (Math.floor(rate * 100) / 100).toFixed(1);
+  }
+
+  get userCanBeRated(): boolean {
+    console.log(this.appointments);
+
+    return true; //this.candidate.appointments;
   }
 
   private hasViewedCandidate() {
@@ -170,30 +187,35 @@ export class UserDetailsPage {
   // }
 
 
-  getRatings(rating) {
-    return this.ratedMe.length > 0 ? (rating + this.rating) / 2 : rating;
+  calculateAverageRating(rating) {
+    return this.userRating && this.userRating.rating ? (rating + this.userRating.rating) / 2 : rating;
   }
 
-  rateCandidate(ratings) {
-    let data;
+  rateCandidate(rating) {
+    let data: Rating;
     data = {
       rated_id_fk: this.candidate.user_id,
       rater_id_fk: this.profile.user_id,
-      rating: this.getRatings(ratings),
+      rating: this.calculateAverageRating(rating),
       date_rated: this.dataProvider.getDate()
     };
+
     this.dataProvider.postDataToDB(data, 'updateRatings').then(res => {
-      this.events.publish(this.dataProvider.USER_RATED);
+      const results: Error = res;
+      if (results.data) {
+        this.events.publish(this.dataProvider.USER_RATED);
+        this.feedbackProvider.presentToast("User rated succesfully");
+      } else {
+        this.feedbackProvider.presentToast("Something went wrong, user not rated");
+      }
     }).catch(err => {
       console.log(err);
     });
   }
 
-  rate(rating) {
+  rateUser(rating) {
     this.isRated = true;
     this.rating = rating;
-    console.log(rating);
-
   }
 
   logout() {
@@ -233,7 +255,7 @@ export class UserDetailsPage {
     let data = {
       recruiter_id_fk: this.profile.user_id,
       candidate_id_fk: user.user_id,
-      status: this.dataProvider.APPOINTMENT_STATUS_APPOINTED, //"REMOVED" , "APPOINTED"
+      status: this.dataProvider.APPOINTMENT_STATUS_IN_PROGRESS, //"completed" , "inprogress"
       date_created: this.dataProvider.getDate()
     }
     this.dataProvider.postDataToDB(data, 'addToAppointments').then(res => {
@@ -256,7 +278,7 @@ export class UserDetailsPage {
   }
 
   hasBeenHired(user) {
-    const appointments = this.dataProvider.getAppointments();
+    const appointments = this.dataProvider.getInProgressAppointments();
     appointments.forEach(app => {
       if (app.candidate_id_fk === user.user_id && app.recruiter_id_fk === this.profile.user_id) {
         this.hired = true;
@@ -264,12 +286,12 @@ export class UserDetailsPage {
     });
   }
 
-  removeCandidateFromAppointments(user) {
+  completeCandidateAppointment(user) {
     this.feedbackProvider.presentLoading("Please wait...");
     let data = {
       recruiter_id_fk: this.profile.user_id,
       candidate_id_fk: user.user_id,
-      status: this.dataProvider.APPOINTMENT_STATUS_REMOVED,
+      status: this.dataProvider.APPOINTMENT_STATUS_COMPLETED,
       date_created: this.dataProvider.getDate()
     }
     this.dataProvider.postDataToDB(data, 'updateAppointmentStatus').then(res => {
@@ -280,14 +302,14 @@ export class UserDetailsPage {
         this.dataProvider.appointments = null;
         this.events.publish(this.dataProvider.APPOINTMENTS_UPDATED, results.data);
         this.hired = !this.hired;
-        this.feedbackProvider.presentToast("Appointment has been cancelled");
+        this.feedbackProvider.presentToast("Appointment has been completed");
       }
       else {
-        console.log(res);
+        this.feedbackProvider.presentErrorAlert('Error occured while completing the appointment');
       }
     }).catch(err => {
       this.feedbackProvider.dismissLoading();
-      console.log(err);
+      this.feedbackProvider.presentErrorAlert('Error occured while completing the appointment');
     })
   }
 
@@ -295,19 +317,19 @@ export class UserDetailsPage {
     return this.profile && this.profile.type.toLowerCase() === 'recruiter' ? true : false;
   }
 
-  removeAppointmentActionSheep(candidate) {
+  completeAppointmentActionSheep(candidate) {
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'You are about to cancel the appointment',
+      title: 'You are about to complete the appointment',
       buttons: [
         {
-          text: 'Cancel appointment',
+          text: 'Complete appointment',
           role: 'destructive',
           handler: () => {
-            this.removeCandidateFromAppointments(candidate);
+            this.completeCandidateAppointment(candidate);
           }
         },
         {
-          text: "Don't Cancel",
+          text: "Don't complete",
           role: 'cancel',
           handler: () => {
           }
@@ -327,6 +349,30 @@ export class UserDetailsPage {
 
   getDefaultProfilePic(profile) {
     return `${this.dataProvider.getMediaUrl()}${profile.gender}.svg`;
+  }
+
+  presentRateUserModal(user) {
+    let profileModal = this.modalCtrl.create(RatingsModalPage, { user: Object.assign(user, { ratings: this.userRating }) });
+    profileModal.onDidDismiss(data => {
+      if (data) {
+        const requestData = {
+          rater_id_fk: this.profile.user_id,
+          rated_id_fk: data.user_id,
+          rating: data.ratings.rating,
+          date_rated: this.dataProvider.getDate()
+        };
+        this.dataProvider.postDataToDB(requestData, 'updateRatings').then(res => {
+          const results: Error = res;
+          if (results.error) {
+            this.feedbackProvider.presentToast("Error: User rating failed");
+          } else {
+            this.feedbackProvider.presentToast("User rated successfully");
+            this.events.publish(this.dataProvider.USER_RATED, data);
+          }
+        })
+      }
+    });
+    profileModal.present();
   }
 
 }

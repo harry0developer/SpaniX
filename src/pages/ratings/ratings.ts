@@ -4,7 +4,7 @@ import { UserDetailsPage } from '../user-details/user-details';
 import { DataProvider } from '../../providers/data/data';
 import { Profile } from '../../models/Profile';
 import { bounceIn } from '../../util/animations';
-import { Rating } from '../../models/Ratings';
+import { Rating, Rate } from '../../models/Ratings';
 
 @IonicPage()
 @Component({
@@ -15,6 +15,7 @@ import { Rating } from '../../models/Ratings';
 export class RatingsPage {
   usersIRated: Array<Rating> = [];
   usersRatedMe: Array<Rating> = [];
+  userRatings;
   users = [];
   profile: Profile;
   ratings: string = 'ratedMe';
@@ -28,40 +29,34 @@ export class RatingsPage {
 
   ionViewDidLoad() {
     this.profile = this.dataProvider.getProfile();
-
-    this.users = this.profile.type === this.dataProvider.USER_TYPE_CANDIDATE ? this.dataProvider.getCandidates() : this.dataProvider.getRecruiters();
-
-    const ratingsData = this.navParams.get('ratingsData');
-    console.log(ratingsData);
-    this.usersRatedMe = this.mapRatersToUsers(ratingsData.ratedMe);
-    this.usersIRated = this.mapRatersToUsers(ratingsData.iRated);
-
-    this.setRatings();
+    this.users = this.dataProvider.getUsers();
+    this.userRatings = this.navParams.get('ratingsData');
+    this.usersRatedMe = this.mapUserRatedMe();
+    this.usersIRated = this.mapUserIRated();
   }
 
-  mapRatersToUsers(raters) {
-    let data: Array<Rating> = [];
-    console.log(raters);
-
-    raters.forEach(rater => {
+  mapUserIRated(): any {
+    let iRated = [];
+    this.userRatings.iRated.forEach(rater => {
       this.users.forEach(user => {
-        if (rater.rated_id_fk === user.user_id) {
-          data.push(user);
-        }
-        else if (rater.rater_id_fk === user.user_id) {
-          data.push(user);
+        if (this.profile.user_id === rater.rater_id_fk && user.user_id === rater.rated_id_fk) {
+          iRated.push(user);
         }
       });
     });
-    return data;
+    return iRated;
   }
 
-  setRatings() {
-    // const iRated = this.dataProvider.getUsersIRated(this.profile.user_id);
-    // const ratedMe = this.dataProvider.getUsersRatedMe(this.profile.user_id);
-
-    // this.usersIRated = this.mapRaters(iRated);
-    // this.usersRatedMe = this.mapRaters(ratedMe);
+  mapUserRatedMe(): any {
+    let ratedMe = [];
+    this.userRatings.ratedMe.forEach(rater => {
+      this.users.forEach(user => {
+        if (this.profile.user_id === rater.rated_id_fk && user.user_id === rater.rater_id_fk) {
+          ratedMe.push(user);
+        }
+      });
+    });
+    return ratedMe;
   }
 
   mapRaters(raters) {
@@ -78,18 +73,8 @@ export class RatingsPage {
     return users;
   }
 
-  getUsersIRated() {
-    // const rated = this.dataProvider.getUsersIRated(this.profile.user_id);
-    // this.usersIRated = this.mapRaters(rated);
-  }
-
-  getUsersRatedMe() {
-    // const rated = this.dataProvider.getUsersRatedMe(this.profile.user_id);
-    // this.usersRatedMe = this.mapRaters(rated);
-  }
-
   getUserDetails(user) {
-    this.navCtrl.push(UserDetailsPage, { user })
+    this.navCtrl.push(UserDetailsPage, { user, page: 'Ratings' })
   }
 
   getDateRated(user) {

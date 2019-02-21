@@ -1,9 +1,8 @@
 export interface Rating {
     date_rated: string,
-    rated_id_fk: string
-    rater_id_fk: string
+    rated_id_fk: number
+    rater_id_fk: number
     rating: number
-    rating_id: string
 }
 
 export interface Rate {

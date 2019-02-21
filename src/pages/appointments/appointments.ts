@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, ModalController } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { bounceIn } from '../../util/animations';
 import { UserDetailsPage } from '../user-details/user-details';
@@ -12,30 +12,25 @@ import { UserDetailsPage } from '../user-details/user-details';
 })
 export class AppointmentsPage {
   profile: any;
-  appointments: any = [];
-  removedAppointments: any = [];
+  inProgressAppointments: any = [];
+  completedAppointments: any = [];
   mappedAppointments: any = [];
   recruiters: any = [];
   candidates: any = [];
+  appointment_type: string = 'inProgress';
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private dataProvider: DataProvider,
-    private events: Events,
-  ) {
-    this.profile = this.dataProvider.getProfile();
-  }
+    private events: Events
+  ) { }
 
   ionViewDidLoad() {
-    this.appointments = this.dataProvider.getAppointments();
-    this.removedAppointments = this.dataProvider.getRemovedAppointments();
+    this.profile = this.dataProvider.getProfile();
     this.recruiters = this.dataProvider.getRecruiters();
     this.candidates = this.dataProvider.getCandidates();
     this.setAppointments();
-
     this.events.subscribe(this.dataProvider.APPOINTMENTS_UPDATED, () => {
       this.mappedAppointments = [];
-      this.appointments = this.dataProvider.getAppointments();
-      this.removedAppointments = this.dataProvider.getRemovedAppointments();
       this.setAppointments();
     });
   }
@@ -46,10 +41,32 @@ export class AppointmentsPage {
     } else {
       this.mapCandidateAppointments();
     }
+    this.initializeAppointments();
+  }
+
+
+  initializeAppointments() {
+    const completedAppointmenz = this.dataProvider.getCompletedAppointments();
+    const inProgressAppointmentz = this.dataProvider.getInProgressAppointments();
+    this.completedAppointments = this.mapAppointments(completedAppointmenz, this.dataProvider.getUsers());
+    this.inProgressAppointments = this.mapAppointments(inProgressAppointmentz, this.dataProvider.getUsers());
+  }
+
+
+  mapAppointments(appointments, users) {
+    const appointedUsers = [];
+    appointments.forEach(app => {
+      users.forEach(user => {
+        if (app.recruiter_id_fk === this.profile.user_id && app.candidate_id_fk === user.user_id) {
+          appointedUsers.push(Object.assign(user, { appointment: app }));
+        }
+      });
+    });
+    return appointedUsers;
   }
 
   mapRecruiterAppointments() {
-    this.appointments.forEach(app => {
+    this.inProgressAppointments.forEach(app => {
       if (app.recruiter_id_fk === this.profile.user_id) {
         this.setRecruiterAppointments(app);
       }
@@ -65,7 +82,7 @@ export class AppointmentsPage {
   }
 
   mapCandidateAppointments() {
-    this.appointments.forEach(app => {
+    this.inProgressAppointments.forEach(app => {
       if (app.candidate_id_fk === this.profile.user_id) {
         this.setCandidateAppointments(app);
       }
@@ -89,15 +106,11 @@ export class AppointmentsPage {
   }
 
   getDateAppointed(user): string {
-    let appointment_date = '';
-    this.appointments.forEach(app => {
-      if (app.candidate_id_fk === user.user_id && app.recruiter_id_fk === this.profile.user_id) {
-        appointment_date = this.dataProvider.getDateTime(app.date_created);
-      } else if (app.recruiter_id_fk === user.user_id && app.candidate_id_fk === this.profile.user_id) {
-        appointment_date = this.dataProvider.getDateTime(app.date_created);
-      }
-    });
-    return appointment_date;
+    return this.dataProvider.getDateTime(user.appointment.date_completed);
+  }
+
+  getDateScheduled(user): string {
+    return this.dataProvider.getDateTime(user.appointment.date_created);
   }
 
   profilePicture(profile): string {
@@ -107,6 +120,5 @@ export class AppointmentsPage {
   getDefaultProfilePic(profile) {
     return `${this.dataProvider.getMediaUrl()}${profile.gender}.svg`;
   }
-
 
 }

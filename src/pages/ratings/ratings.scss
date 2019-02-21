@@ -1,3 +1,20 @@
 page-ratings {
 
+	.segment-button {
+		font-size: .7em !important;
+		color: $white !important;
+	}
+
+	.segment-ios {
+		.segment-button {
+			border-color: $white !important;
+			color: #fff;
+			&.segment-activated {
+				background-color: #c03633 !important;
+			}
+		}
+	}
+	.list-ios, .list-md {
+		margin: 0;
+	}
 }

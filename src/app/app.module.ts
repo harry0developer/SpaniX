@@ -51,6 +51,7 @@ import { CardDetailsPage } from '../pages/card-details/card-details';
 import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/shrinking-segment-header';
 import { UserDetailsPage } from '../pages/user-details/user-details';
 import { RatingsPage } from '../pages/ratings/ratings';
+import { RatingsModalPage } from '../pages/ratings-modal/ratings-modal';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { RatingsPage } from '../pages/ratings/ratings';
     SharedJobsPage,
     ShrinkingSegmentHeader,
     CardDetailsPage,
-    RatingsPage
+    RatingsPage,
+    RatingsModalPage
   ],
   imports: [
     BrowserModule,
@@ -123,7 +125,8 @@ import { RatingsPage } from '../pages/ratings/ratings';
     SharedJobsPage,
     ShrinkingSegmentHeader,
     CardDetailsPage,
-    RatingsPage
+    RatingsPage,
+    RatingsModalPage
   ],
   providers: [
     StatusBar,

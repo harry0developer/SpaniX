@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { Profile } from '../../models/Profile';
 import { SettingsPage } from '../settings/settings';
-import { Rating } from 'ngx-rating';
 import { CardDetailsPage } from '../card-details/card-details';
 import { AppointmentsPage } from '../appointments/appointments';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
@@ -40,8 +39,6 @@ export class DashboardPage {
   ionViewDidLoad() {
     this.profile = this.dataProvider.getProfile();
     this.defaultImg = `${this.dataProvider.getMediaUrl()}${this.profile.gender}.svg`;
-
-    // this.stars = this.dataProvider.getMyRating(this.profile.user_id) || 0;
 
     this.events.subscribe(this.dataProvider.USER_LOGGED_IN, user => {
       this.profile = user;
@@ -88,21 +85,16 @@ export class DashboardPage {
   init() {
     let userType;
     if (this.isRecruiter()) {
-      userType = 'recruiter';
+      userType = this.dataProvider.USER_TYPE_RECRUITER;
       this.postedJobs = this.dataProvider.getMyPostedJobs(this.profile.user_id);
     } else {
-      userType = 'candidate';
+      userType = this.dataProvider.USER_TYPE_CANDIDATE;
       this.appliedJobs = this.dataProvider.getMyAppliedJobs(this.profile.user_id, userType);
     }
     this.viewedJobs = this.dataProvider.getMyViewedJobs(this.profile.user_id, userType);
     this.sharedJobs = this.dataProvider.getMySharedJobs(this.profile.user_id, userType);
-    // const iRated = this.dataProvider.getUsersIRated(this.profile.user_id);
-    // const ratedMe = this.dataProvider.getUsersRatedMe(this.profile.user_id);
-    // this.rated = iRated.concat(ratedMe);
 
     this.ratingsData = this.dataProvider.getMyRatingsData(this.profile.user_id);
-    console.log(this.ratingsData);
-
   }
 
   isRecruiter() {

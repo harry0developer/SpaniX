@@ -1,13 +1,14 @@
 <ion-header>
   <ion-navbar color="dark">
-    <ion-title>My Ratings</ion-title>
+    <ion-title> My Ratings </ion-title>
   </ion-navbar>
+
   <ion-toolbar color="light">
     <ion-segment color="dark" [(ngModel)]="ratings">
-      <ion-segment-button value="ratedMe" (ionSelect)="getUsersRatedMe()">
+      <ion-segment-button value="ratedMe">
         Rated me
       </ion-segment-button>
-      <ion-segment-button value="iRated" (ionSelect)="getUsersIRated()">
+      <ion-segment-button value="iRated">
         I rated
       </ion-segment-button>
     </ion-segment>

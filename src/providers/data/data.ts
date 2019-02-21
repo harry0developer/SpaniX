@@ -28,7 +28,7 @@ export class DataProvider {
   jobs: any = [];
   appliedJobs: any = [];
   appointments: any = [];
-  removedAppointments: any = [];
+  completedAppointments: any = [];
   viewedJobs: any = [];
   viewedCandidates: any = [];
   sharedJobs: any = [];
@@ -52,8 +52,8 @@ export class DataProvider {
   APPLIED_JOBS_UPDATED = 'appliedJobs:updated';
   APPOINTMENTS_UPDATED = 'appointments:updated';
 
-  APPOINTMENT_STATUS_APPOINTED = 'appointed';
-  APPOINTMENT_STATUS_REMOVED = 'removed';
+  APPOINTMENT_STATUS_IN_PROGRESS = 'inProgress';
+  APPOINTMENT_STATUS_COMPLETED = 'completed';
 
   USER_PROFILE_UPDATED = 'profile:updated';
   USER_SETTINGS_UPDATE = 'settings:updated';
@@ -72,22 +72,10 @@ export class DataProvider {
     private events: Events,
     private feedbackProvider: FeedbackProvider,
   ) {
-    // this.recruiters = null;
-    // this.candidates = null;
-    // this.jobs = null;
-    // this.appliedJobs = null;
-    // this.appointments = null;
-    // this.removedAppointments = null;
-    // this.viewedJobs = null;
-    // this.sharedJobs = null;
-    // this.profile = null;
-    // this.settings = null;
-    // this.ratings = null;
-    // this.viewedCandidates = null;
 
     this.events.subscribe(this.APPOINTMENTS_UPDATED, appointments => {
-      this.appointments = appointments.filter(app => app.status === this.APPOINTMENT_STATUS_APPOINTED);
-      this.removedAppointments = appointments.filter(app => app.status === this.APPOINTMENT_STATUS_REMOVED);
+      this.appointments = appointments.filter(app => app.status === this.APPOINTMENT_STATUS_IN_PROGRESS);
+      this.completedAppointments = appointments.filter(app => app.status === this.APPOINTMENT_STATUS_COMPLETED);
     });
 
     this.events.subscribe(this.JOBS_UPDATED, jobs => {
@@ -201,12 +189,12 @@ export class DataProvider {
     return this.location;
   }
 
-  getAppointments() {
+  getInProgressAppointments() {
     return this.appointments || [];
   }
 
-  getRemovedAppointments() {
-    return this.removedAppointments || [];
+  getCompletedAppointments() {
+    return this.completedAppointments || [];
   }
 
   getRecruiters() {
@@ -237,9 +225,11 @@ export class DataProvider {
     return this.settings || [];
   }
 
+
+
   private _getUsersIRated(userId): Array<Rating> {
     let rated = [];
-    if (this.ratings.length) {
+    if (this.ratings && this.ratings.length) {
       this.ratings.forEach(ratingObj => {
         if (ratingObj.rater_id_fk === userId) {
           rated.push(ratingObj);
@@ -251,7 +241,7 @@ export class DataProvider {
 
   private _getUsersRatedMe(userId): Array<Rating> {
     let rated = [];
-    if (this.ratings.length) {
+    if (this.ratings && this.ratings.length) {
       this.ratings.forEach(ratingObj => {
         if (ratingObj.rated_id_fk === userId) {
           rated.push(ratingObj);
@@ -264,7 +254,7 @@ export class DataProvider {
   private _getMyRating(userId: number): number {
     let myRating = 0;
     let countRaters = 0;
-    if (this.ratings.length) {
+    if (this.ratings && this.ratings.length) {
       this.ratings.forEach(ratingObj => {
         if (ratingObj.rated_id_fk === userId) {
           countRaters++;
@@ -275,11 +265,15 @@ export class DataProvider {
     return myRating / countRaters;
   }
 
+  getUsers() {
+    return [...this.candidates, ...this.recruiters];
+  }
+
   getMyRatingsData(userId: number): Rate {
     const rateObject: Rate = {
       iRated: this._getUsersIRated(userId),
       ratedMe: this._getUsersRatedMe(userId),
-      rating: this._getMyRating(userId)
+      rating: this._getMyRating(userId) || 0
     };
     return rateObject;
   }
@@ -404,9 +398,6 @@ export class DataProvider {
         });
       }
     });
-
-    console.log(appz);
-
     return appz;
   }
 
@@ -548,8 +539,8 @@ export class DataProvider {
     let appointments;
     this.getDataFromDB('Appointments').then(res => {
       appointments = res;
-      this.appointments = appointments.data.filter(app => app.status === this.APPOINTMENT_STATUS_APPOINTED);
-      this.removedAppointments = appointments.data.filter(app => app.status === this.APPOINTMENT_STATUS_REMOVED);
+      this.appointments = appointments.data.filter(app => app.status === this.APPOINTMENT_STATUS_IN_PROGRESS);
+      this.completedAppointments = appointments.data.filter(app => app.status === this.APPOINTMENT_STATUS_COMPLETED);
     }).catch(error => {
       this.feedbackProvider.presentAlert("Oopsie", "Something went wrong fetching data, please try again");
     })

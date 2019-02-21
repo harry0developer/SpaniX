@@ -1,0 +1,58 @@
+page-ratings-modal {
+  .top{
+    text-align: center;
+    padding-bottom: 10px;
+    p{
+      padding: 0 !important;
+      margin: 5px 0 !important;
+    }
+    h2{
+      margin: 10px 0 2px 0;
+      font-size: 1.4em;
+    }
+    .star-icon {
+      font-size: 1.4em !important;
+      color: $primary !important;
+    }
+    .star-icon:before {
+        color: $primary !important;
+    }
+
+    .profile-image {
+      .imagex {
+        margin: 0 auto;
+        width: fit-content;
+        position: relative;
+
+        .image{
+          border: 4px solid $primary;
+          padding: 2px;
+          width: 100px;
+          height: 100px;
+          margin: 20px 0 10px 0;
+          border-radius: 100%;
+        }
+
+        .ratings {
+          position: absolute;
+          top: 31px;
+          left: 76px;
+          width: 40px;
+          height: 40px;
+          padding: 3px 0 0 3px;
+          text-align: center;
+          font-weight: .9em;
+          line-height: 1;
+          vertical-align: middle;
+          border-radius: 50%;
+          background-color: $white;
+          border: 2px solid $primary;
+          color: $primary;
+          .fa.fa-star {
+              font-size: .8em;
+          }
+        }
+      }
+    }
+  }
+}
